@@ -13,15 +13,15 @@ export function Card({
 }): JSX.Element {
   return (
     <a
-      className={className}
+      className={`block p-6 rounded-xl border border-primary-200 bg-white hover:border-primary-400 hover:shadow-lg transition-all ${className ?? ""}`}
       href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
       rel="noopener noreferrer"
       target="_blank"
     >
-      <h2>
-        {title} <span>-&gt;</span>
+      <h2 className="text-xl font-semibold text-primary-900 mb-2">
+        {title} <span className="text-primary-500">→</span>
       </h2>
-      <p>{children}</p>
+      <p className="text-primary-600">{children}</p>
     </a>
   );
 }

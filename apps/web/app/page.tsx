@@ -1,5 +1,11 @@
+import { Button } from "@repo/ui/button";
+
 function Home() {
-  return <div className="bg-primary-50">Home</div>;
+  return (
+    <div>
+      <Button appName="Home">button</Button>
+    </div>
+  );
 }
 
 export default Home;
