@@ -1,21 +1,40 @@
 import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import globals from "globals";
+
 import eslintConfigPrettier from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
+
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import tseslint from "typescript-eslint";
 
-/**
- * A shared ESLint configuration for the repository.
- *
- * @type {import("eslint").Linter.Config[]}
- */
-export const config = [
+export default [
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/.next/**",
+      "**/out/**",
+      "**/.turbo/**",
+      "**/coverage/**",
+    ],
+  },
+
   js.configs.recommended,
   ...tseslint.configs.recommended,
+
   eslintConfigPrettier,
+
   {
+    files: ["**/*.{js,jsx,ts,tsx,mjs,cjs}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
     plugins: {
       turbo: turboPlugin,
       "unused-imports": unusedImports,
@@ -68,8 +87,5 @@ export const config = [
         },
       ],
     },
-  },
-  {
-    ignores: ["dist/**", "node_modules/**"],
   },
 ];

@@ -1,11 +1,5 @@
-import { Button } from "@repo/ui/button";
+import React from "react";
 
-function Home() {
-  return (
-    <div>
-      <Button appName="Home">button</Button>
-    </div>
-  );
+export default function page() {
+  return <div>page</div>;
 }
-
-export default Home;
