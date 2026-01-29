@@ -1,6 +1,4 @@
-### #️⃣반영 브랜치
-
-ex) chore/#이슈넘버 -> main, close #{이슈넘버}
+- [GITHUB ISSUE LINK]()
 
 ## 📝작업 내용
 

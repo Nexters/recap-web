@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui/button";
+import { Button } from "@recap/ui";
 
 function Home() {
   return (

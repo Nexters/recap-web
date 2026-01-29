@@ -29,7 +29,7 @@ importers:
 
   apps/extension:
     dependencies:
-      '@repo/ui':
+      '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       react:
@@ -42,13 +42,13 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0
     devDependencies:
-      '@repo/eslint-config':
+      '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/tailwind-config':
+      '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@repo/typescript-config':
+      '@recap/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tailwindcss/vite':
@@ -84,7 +84,7 @@ importers:
 
   apps/landing:
     dependencies:
-      '@repo/ui':
+      '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -97,13 +97,13 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/tailwind-config':
+      '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@repo/typescript-config':
+      '@recap/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tailwindcss/postcss':
@@ -133,7 +133,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/ui':
+      '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -146,13 +146,13 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@repo/tailwind-config':
+      '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@repo/typescript-config':
+      '@recap/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tailwindcss/postcss':
@@ -254,10 +254,10 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
     devDependencies:
-      '@repo/eslint-config':
+      '@recap/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@repo/typescript-config':
+      '@recap/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
