@@ -1,15 +1,10 @@
-import base from "./base.mjs";
-
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 
-/**
- * Vite(React) preset
- */
+import base from "./base.mjs";
+
 export default [
   ...base,
-
-  // React recommended (flat config)
   {
     ...reactPlugin.configs.flat.recommended,
     settings: { react: { version: "detect" } },
@@ -18,8 +13,6 @@ export default [
       "react/react-in-jsx-scope": "off",
     },
   },
-
-  // React Hooks
   {
     plugins: { "react-hooks": reactHooksPlugin },
     rules: {
