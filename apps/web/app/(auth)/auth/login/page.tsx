@@ -21,15 +21,20 @@ export default function GoogleLoginPage() {
       return;
     }
 
-    // 1) GIS 스크립트 로드
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
     script.defer = true;
 
     script.onload = () => {
-      // 2) 초기화: 여기서 credential(JWT id_token)을 받는다
-      window.google.accounts.id.initialize({
+      const google = window.google;
+
+      if (!google) {
+        setMsg("Google 스크립트가 로드되지 않았어요.");
+        return;
+      }
+
+      google.accounts.id.initialize({
         client_id: clientId,
         callback: async (resp: { credential?: string }) => {
           try {
@@ -65,6 +70,9 @@ export default function GoogleLoginPage() {
 
       // 4) 버튼 렌더
       if (btnRef.current) {
+        if (!window.google) {
+          return;
+        }
         window.google.accounts.id.renderButton(btnRef.current, {
           theme: "outline",
           size: "large",
@@ -73,9 +81,6 @@ export default function GoogleLoginPage() {
           text: "signin_with",
         });
       }
-
-      // (옵션) One Tap
-      // window.google.accounts.id.prompt();
     };
 
     document.head.appendChild(script);
