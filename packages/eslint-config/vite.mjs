@@ -1,3 +1,4 @@
+import eslintConfigPrettier from "eslint-config-prettier";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 
@@ -19,4 +20,5 @@ export default [
       ...reactHooksPlugin.configs.recommended.rules,
     },
   },
+  eslintConfigPrettier,
 ];
