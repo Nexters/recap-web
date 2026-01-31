@@ -4,18 +4,32 @@ import prettierPlugin from "eslint-plugin-prettier";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
-/**
- * A shared ESLint configuration for the repository.
- *
- * @type {import("eslint").Linter.Config[]}
- */
-export const config = [
+export default [
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/.next/**",
+      "**/out/**",
+      "**/.turbo/**",
+      "**/coverage/**",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
   {
+    files: ["**/*.{js,jsx,ts,tsx,mjs,cjs}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
     plugins: {
       turbo: turboPlugin,
       "unused-imports": unusedImports,
@@ -24,10 +38,9 @@ export const config = [
     },
     rules: {
       "turbo/no-undeclared-env-vars": "warn",
-
-      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
-        "warn",
+        "error",
         {
           vars: "all",
           varsIgnorePattern: "^_",
@@ -35,20 +48,17 @@ export const config = [
           argsIgnorePattern: "^_",
         },
       ],
-
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         {
           ignoreRestSiblings: true,
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
         },
       ],
-
       "simple-import-sort/imports": [
-        "warn",
+        "error",
         {
           groups: [
             ["^react", "^next", "^@?\\w"],
@@ -58,8 +68,7 @@ export const config = [
           ],
         },
       ],
-      "simple-import-sort/exports": "warn",
-
+      "simple-import-sort/exports": "error",
       "prettier/prettier": [
         "error",
         {
@@ -68,8 +77,5 @@ export const config = [
         },
       ],
     },
-  },
-  {
-    ignores: ["dist/**", "node_modules/**"],
   },
 ];
