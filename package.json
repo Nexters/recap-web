@@ -10,6 +10,7 @@
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
     "dev:landing": "turbo run dev --filter=landing",
+    "dev:extenstion": "turbo run dev --filter=extension",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
