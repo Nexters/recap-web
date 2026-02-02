@@ -4,6 +4,21 @@ import browser from "webextension-polyfill";
 import { MESSAGE_TYPE } from "../types/messages";
 import type { StorageSession } from "../types/storage";
 
+function formatDateTime(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function isActive(session: StorageSession): boolean {
+  return !session.closedAt || session.closedAt === session.visitedAt;
+}
+
 export function Popup() {
   const [currentUrl, setCurrentUrl] = useState<string>("");
   const [sessions, setSessions] = useState<StorageSession[]>([]);
@@ -63,28 +78,51 @@ export function Popup() {
               No sessions yet
             </p>
           ) : (
-            sessions.map((session) => (
-              <div
-                key={session.sessionId}
-                className="flex flex-col gap-1 p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
-              >
-                <span className="text-xs font-medium text-cyan-400 line-clamp-1">
-                  {session.title || "Untitled"}
-                </span>
-                {session.metadata?.description && (
-                  <span className="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">
-                    {session.metadata.description}
-                  </span>
-                )}
-                {session.metadata?.thumbnailUrl && (
-                  <img
-                    src={session.metadata.thumbnailUrl}
-                    alt={session.title}
-                    className="w-full h-16 object-cover rounded mt-1"
-                  />
-                )}
-              </div>
-            ))
+            sessions.map((session) => {
+              const active = isActive(session);
+              return (
+                <div
+                  key={session.sessionId}
+                  className="flex flex-col gap-1 p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-cyan-400 line-clamp-1 flex-1">
+                      {session.title || "Untitled"}
+                    </span>
+                    {active && (
+                      <span className="text-[10px] px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded font-medium">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-0.5 text-[10px] text-gray-500">
+                    <span>시작: {formatDateTime(session.visitedAt)}</span>
+                    {active ? (
+                      <span className="text-green-400">종료: Active</span>
+                    ) : (
+                      <span>
+                        종료:{" "}
+                        {session.closedAt
+                          ? formatDateTime(session.closedAt)
+                          : "Unknown"}
+                      </span>
+                    )}
+                  </div>
+                  {session.metadata?.description && (
+                    <span className="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">
+                      {session.metadata.description}
+                    </span>
+                  )}
+                  {session.metadata?.thumbnailUrl && (
+                    <img
+                      src={session.metadata.thumbnailUrl}
+                      alt={session.title}
+                      className="w-full h-16 object-cover rounded mt-1"
+                    />
+                  )}
+                </div>
+              );
+            })
           )}
         </div>
       </div>
