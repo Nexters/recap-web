@@ -1,12 +1,13 @@
 import { getPageSnapshot } from "src/content/get-page-metrics";
+import { MESSAGE_TYPE, type PageVisitedMessage } from "src/types/messages";
 
 console.log("Content script loaded on:", window.location.href);
 
 function sendPageVisited() {
   const pageData = getPageSnapshot();
 
-  const message = {
-    type: "PAGE_VISITED",
+  const message: PageVisitedMessage = {
+    type: MESSAGE_TYPE.PAGE_VISITED,
     data: pageData,
   };
 
