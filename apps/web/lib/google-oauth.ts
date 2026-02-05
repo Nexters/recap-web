@@ -20,11 +20,9 @@ export function buildGoogleAuthorizeUrl(params: {
   url.searchParams.set("scope", scope);
   url.searchParams.set("state", state);
 
-  // PKCE
   url.searchParams.set("code_challenge", codeChallenge);
   url.searchParams.set("code_challenge_method", "S256");
 
-  // refresh_token이 꼭 필요 없으면 offline은 빼도 됨
   url.searchParams.set("prompt", "consent");
   url.searchParams.set("access_type", "online");
 

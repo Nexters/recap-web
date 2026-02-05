@@ -3,7 +3,7 @@ export type GoogleTokenResponse = {
   expires_in: number;
   scope: string;
   token_type: "Bearer";
-  id_token?: string; // openid scope 포함 시
+  id_token?: string;
   refresh_token?: string;
 };
 

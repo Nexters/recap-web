@@ -162,10 +162,8 @@ export class RestAPI implements RestAPIProtocol {
 
       if (validate) {
         try {
-          // zod.parse 호출 (validate에 parse를 직접 넣어줬으므로)
           return validate(payload);
         } catch (err) {
-          // ZodError를 APIError로 감싸고 자세히 찍힘
           wrapZodError(err, fullUrl, methodUpper);
         }
       }

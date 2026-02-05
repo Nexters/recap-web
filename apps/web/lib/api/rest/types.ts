@@ -5,22 +5,21 @@ export type QueryParams = Record<
 >;
 
 export type RestAPIConfig = {
-  baseURL?: string; // 각 서비스별 prefix (예: 'activity')
+  baseURL?: string;
 };
 
 export type RestRequestOptions<T> = {
-  url: string; // 'activity/:activityId/mentor'
-  param?: PathParams; // { activityId }
-  query?: QueryParams; // { page, size, role }
-  data?: unknown; // body
+  url: string;
+  param?: PathParams;
+  query?: QueryParams;
+  data?: unknown;
   headers?: Record<string, string>;
   timeoutMs?: number;
   parseAs?: "json" | "text" | "blob";
-  validate?: (input: unknown) => T; // zodSchema.parse
-  // fetch 레벨 설정
+  validate?: (input: unknown) => T;
   signal?: AbortSignal;
   credentials?: RequestCredentials;
-  method?: string; // 내부용
+  method?: string;
 };
 
 export interface RestAPIProtocol {
