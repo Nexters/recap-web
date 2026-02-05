@@ -1,9 +1,9 @@
 import {
   addBrowserSession,
-  addPrevBrowserSession,
   closeBrowserSession,
-  closeLastBrowserSession,
+  deleteBrowserSession,
   getBrowserSession,
+  visitBrowserSession,
 } from "src/services/browser-service";
 import browser from "webextension-polyfill";
 
@@ -17,13 +17,14 @@ browser.runtime.onInstalled.addListener((): void => {
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
   console.log("Background: Tab removed >>>>>", tabId);
-  closeBrowserSession(String(tabId));
+  deleteBrowserSession(String(tabId));
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   console.log("Background: Tab activated >>>>>", tabId);
-  await closeLastBrowserSession();
-  await addPrevBrowserSession(String(tabId));
+  const closedSession = await closeBrowserSession();
+  console.log("Closed session api payload >>>>>", closedSession);
+  await visitBrowserSession(String(tabId));
 });
 
 browser.runtime.onMessage.addListener(
@@ -34,7 +35,7 @@ browser.runtime.onMessage.addListener(
     const msg = message as ExtensionMessage;
 
     if (msg.type === MESSAGE_TYPE.PAGE_VISITED) {
-      return addBrowserSession(sender.tab?.id?.toString() ?? "", msg.data);
+      return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
     }
 
     if (msg.type === MESSAGE_TYPE.GET_PAGE_VISITED) {
