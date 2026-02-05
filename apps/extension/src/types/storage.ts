@@ -9,15 +9,14 @@ export interface PageSnapshot {
 }
 
 export interface StorageSession extends PageSnapshot {
-  tabId: string;
   visitedAt: string;
   closedAt?: string | null;
 }
 
 export interface StorageData {
-  sessions: StorageSession[];
+  sessions: Record<string, StorageSession>;
 }
 
 export const defaultStorage: StorageData = {
-  sessions: [],
+  sessions: {},
 };
