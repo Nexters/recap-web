@@ -7,6 +7,6 @@ export const authAPIService = new AuthAPIService(
       baseURL: "api/v1/auth",
     },
     false,
-    "http://1.201.17.108:8080",
+    process.env.NEXT_PUBLIC_BACKEND_URL,
   ),
 );
