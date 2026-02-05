@@ -9,7 +9,7 @@ export interface PageSnapshot {
 }
 
 export interface StorageSession extends PageSnapshot {
-  sessionId: string;
+  tabId: string;
   visitedAt: string;
   closedAt?: string | null;
 }
