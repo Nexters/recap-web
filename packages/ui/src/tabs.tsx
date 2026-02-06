@@ -5,10 +5,8 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "./utils/cn";
 
-/** Root */
 const Tabs = TabsPrimitive.Root;
 
-/** List */
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
@@ -16,7 +14,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "relative flex items-center gap-1 rounded-full border border-border2 bg-surface shadow-1",
+      "flex items-center gap-2.5 p-2 rounded-full bg-gray-75 border border-solid border-gray-200",
       className,
     )}
     {...props}
@@ -24,7 +22,6 @@ const TabsList = React.forwardRef<
 ));
 TabsList.displayName = "TabsList";
 
-/** Trigger */
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
@@ -32,10 +29,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "relative z-10 inline-flex items-center justify-center rounded-full px-4 py-2",
-      "select-none outline-none transition-colors",
-      "text-subtext data-[state=active]:text-white",
-      "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+      "rounded-full py-1.5 border border-transparent border-solid w-[5.625rem] text-gray-500 text-subtitle-2-sb data-[state=active]:bg-gray-900 data-[state=active]:shadow-gnb data-[state=active]:text-white data-[state=active]:border-gray-75",
       className,
     )}
     {...props}
@@ -43,16 +37,11 @@ const TabsTrigger = React.forwardRef<
 ));
 TabsTrigger.displayName = "TabsTrigger";
 
-/** Content */
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn("outline-none", className)}
-    {...props}
-  />
+  <TabsPrimitive.Content ref={ref} className={cn(className)} {...props} />
 ));
 TabsContent.displayName = "TabsContent";
 
