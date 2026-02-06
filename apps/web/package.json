@@ -23,6 +23,8 @@
     "@recap/eslint-config": "workspace:*",
     "@recap/react-query": "workspace:*",
     "@recap/typescript-config": "workspace:*",
+    "@recap/tokens": "workspace:*",
+    "@recap/tailwind-config": "workspace:*",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
