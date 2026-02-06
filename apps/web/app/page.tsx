@@ -1,13 +1,25 @@
-import { createQueryClient } from "@recap/react-query";
-import { dehydrateState } from "@recap/react-query";
-import { HydrationBoundary } from "@tanstack/react-query";
+// import { createQueryClient } from "@recap/react-query";
+// import { dehydrateState } from "@recap/react-query";
+// import { HydrationBoundary } from "@tanstack/react-query";
+import { Tabs, TabsList, TabsTrigger } from "@recap/ui";
 
-export default async function Page() {
-  const qc = createQueryClient();
+// export default async function Page() {
 
-  // await qc.prefetchQuery({ queryKey: ["me"], queryFn: fetchMe });
+//   return <HydrationBoundary state={state}>page</HydrationBoundary>;
+// "use client";
 
-  const state = dehydrateState(qc);
+export default function Page() {
+  //   const qc = createQueryClient();
 
-  return <HydrationBoundary state={state}>page</HydrationBoundary>;
+  // // await qc.prefetchQuery({ queryKey: ["me"], queryFn: fetchMe });
+
+  // const state = dehydrateState(qc);
+  return (
+    <Tabs defaultValue="a">
+      <TabsList className="bg-surface border border-border2">
+        <TabsTrigger value="a">A</TabsTrigger>
+        <TabsTrigger value="b">B</TabsTrigger>
+      </TabsList>
+    </Tabs>
+  );
 }
