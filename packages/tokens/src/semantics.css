@@ -1,0 +1,38 @@
+:root {
+  /* surfaces */
+  --color-bg: var(--color-gray-75);
+  --color-surface: var(--color-white);
+
+  /* text & icon */
+  --color-text: var(--color-gray-900);
+  --color-subtext: var(--color-gray-500);
+  --color-icon-sub: var(--color-gray-400);
+
+  /* borders/dividers */
+  --color-border-1: var(--color-gray-100); /* line stroke1 */
+  --color-border-2: var(--color-gray-200); /* line stroke2 */
+
+  /* brand */
+  --color-primary: var(--color-blue-300);
+  --color-primary-weak: var(--color-blue-100);
+  --color-primary-strong: var(--color-blue-500);
+
+  /* button semantics (이미지의 text btn / btn fill 개념) */
+  --color-button-text: var(--color-gray-600);
+  --color-button-fill: var(--color-gray-900);
+
+  /* status */
+  --color-positive: var(--color-positive);
+  --color-cautionary: var(--color-cautionary);
+  --color-destructive: var(--color-destructive);
+
+  /* effects */
+  --color-shadow: rgba(0, 0, 0, 0.12);
+  --opacity-shadow-1: 0.12;
+  --opacity-shadow-2: 0.2;
+
+  /* semantic gradient/shadow */
+  --bg-gradient: var(--gradient-primary);
+  --elevation-1: var(--shadow-1);
+  --elevation-2: var(--shadow-2);
+}

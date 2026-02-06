@@ -173,6 +173,12 @@ importers:
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@recap/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      '@recap/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@recap/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -236,6 +242,10 @@ importers:
       typescript-eslint:
         specifier: ^8.0.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/tailwind-config: {}
+
+  packages/tokens: {}
 
   packages/typescript-config: {}
 
