@@ -315,6 +315,9 @@ importers:
       "@recap/eslint-config":
         specifier: workspace:*
         version: link:../eslint-config
+      "@recap/tailwind-config":
+        specifier: workspace:*
+        version: link:../tailwind-config
       "@recap/typescript-config":
         specifier: workspace:*
         version: link:../typescript-config

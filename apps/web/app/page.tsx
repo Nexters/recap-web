@@ -15,11 +15,14 @@ export default function Page() {
 
   // const state = dehydrateState(qc);
   return (
-    <Tabs defaultValue="a">
-      <TabsList className="bg-surface border border-border2">
-        <TabsTrigger value="a">A</TabsTrigger>
-        <TabsTrigger value="b">B</TabsTrigger>
-      </TabsList>
-    </Tabs>
+    <div className="w-[400px] mt-20 ml-20">
+      <Tabs defaultValue="a">
+        <TabsList>
+          <TabsTrigger value="a">분석</TabsTrigger>
+          <TabsTrigger value="b">AI 리캡</TabsTrigger>
+          <TabsTrigger value="c">설정</TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </div>
   );
 }

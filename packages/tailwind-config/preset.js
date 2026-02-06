@@ -19,6 +19,9 @@ const preset = {
         ],
       },
       colors: {
+        gray: {
+          75: "var(--color-gray-75)",
+        },
         bg: "var(--color-bg)",
         surface: "var(--color-surface)",
 
@@ -38,7 +41,6 @@ const preset = {
         destructive: "var(--color-destructive)",
       },
       fontSize: {
-        // Display
         "display-1": [
           "2.5rem",
           { lineHeight: "3.25rem", letterSpacing: "-0.002em" },
@@ -117,6 +119,9 @@ const preset = {
           "0.75rem",
           { lineHeight: "1rem", letterSpacing: "0.0057em" },
         ],
+      },
+      boxShadow: {
+        gnb: "0px 1.26px 2.53px -1.26px rgba(0,0,0,0.10), 0px 1.26px 3.79px 0px rgba(0,0,0,0.10)",
       },
     },
   },
