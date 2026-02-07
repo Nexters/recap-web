@@ -1,9 +1,10 @@
+import { APIError, wrapZodError } from "../errors/APIError";
+
 import type {
   RestAPIConfig,
   RestAPIProtocol,
   RestRequestOptions,
-} from "lib/api/rest/types";
-import { APIError, wrapZodError } from "lib/api/types";
+} from "./types";
 
 type RestAPIInstanceInit = {
   headers?: Record<string, string>;
@@ -48,11 +49,8 @@ function buildQuery(query?: Record<string, unknown>) {
   const sp = new URLSearchParams();
   Object.entries(query).forEach(([k, v]) => {
     if (v === undefined) return;
-    if (Array.isArray(v)) {
-      v.forEach((item) => sp.append(k, String(item)));
-    } else {
-      sp.set(k, String(v));
-    }
+    if (Array.isArray(v)) v.forEach((item) => sp.append(k, String(item)));
+    else sp.set(k, String(v));
   });
   const s = sp.toString();
   return s ? `?${s}` : "";
@@ -86,9 +84,15 @@ export class RestAPI implements RestAPIProtocol {
       signal,
       credentials,
     } = opts;
+
     const path = applyPathParams(url, param);
-    const basePrefix = this.config.baseURL ? `/${this.config.baseURL}` : "";
-    const fullUrl = `${this.instance.getBaseURL()}${basePrefix}/${path.replace(/^\/+/, "")}${buildQuery(query)}`;
+    const basePrefix = this.config.APIbaseURL
+      ? `/${this.config.APIbaseURL}`
+      : "";
+    const fullUrl = `${this.instance.getBaseURL()}${basePrefix}/${path.replace(
+      /^\/+/,
+      "",
+    )}${buildQuery(query)}`;
 
     const controller = new AbortController();
     const timer = timeoutMs
@@ -118,7 +122,6 @@ export class RestAPI implements RestAPIProtocol {
       const isForm = hdr["Content-Type"] === "multipart/form-data";
       if (isForm) {
         delete hdr["Content-Type"];
-
         reqInit.body = data as unknown as BodyInit;
       } else {
         if (!hdr["Content-Type"]) hdr["Content-Type"] = "application/json";
@@ -126,23 +129,11 @@ export class RestAPI implements RestAPIProtocol {
       }
     }
 
-    if (data !== undefined && methodUpper !== "GET") {
-      const isForm =
-        (reqInit.headers as Record<string, string>)["Content-Type"] ===
-        "multipart/form-data";
-      reqInit.body = isForm
-        ? (data as unknown as BodyInit)
-        : JSON.stringify(data);
-      if (isForm) {
-        delete (reqInit.headers as Record<string, string>)["Content-Type"];
-      }
-    }
-
     try {
       const res = await this.instance.request(fullUrl, reqInit);
+
       if (!res.ok) {
         const text = await res.text().catch(() => "");
-
         throw new APIError(text || res.statusText, {
           status: res.status,
           meta: {
@@ -158,6 +149,7 @@ export class RestAPI implements RestAPIProtocol {
 
       const isEnvelope =
         body && typeof body === "object" && "success" in body && "data" in body;
+
       const payload = isEnvelope ? body.data : body;
 
       if (validate) {

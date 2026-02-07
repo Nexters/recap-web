@@ -170,6 +170,9 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
+      '@recap/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -194,6 +197,19 @@ importers:
       tailwindcss:
         specifier: ^4.0.0
         version: 4.1.18
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
+  packages/api:
+    dependencies:
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
+    devDependencies:
+      '@recap/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       typescript:
         specifier: 5.9.2
         version: 5.9.2

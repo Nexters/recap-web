@@ -1,11 +1,12 @@
 export type PathParams = Record<string, string | number>;
+
 export type QueryParams = Record<
   string,
   string | number | boolean | (string | number | boolean)[] | undefined
 >;
 
 export type RestAPIConfig = {
-  baseURL?: string;
+  APIbaseURL?: string;
 };
 
 export type RestRequestOptions<T> = {
@@ -19,7 +20,6 @@ export type RestRequestOptions<T> = {
   validate?: (input: unknown) => T;
   signal?: AbortSignal;
   credentials?: RequestCredentials;
-  method?: string;
 };
 
 export interface RestAPIProtocol {
