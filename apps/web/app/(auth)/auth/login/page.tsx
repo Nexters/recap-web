@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { authAPIService } from "app/(auth)/src/service";
 
+import { tokenStore } from "../../../../lib/token-store";
+
+type BackendLoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export default function GoogleLoginPage() {
+  const router = useRouter();
+
   const [msg, setMsg] = useState("");
   const [ready, setReady] = useState(false);
 
@@ -46,15 +56,28 @@ export default function GoogleLoginPage() {
                 `Google error: ${resp.error} ${resp.error_description ?? ""}`.trim(),
               );
             }
-            const accessToken = resp.access_token;
-            if (!accessToken) throw new Error("Google access_token이 없어요.");
 
-            const data = await authAPIService.googleOauthLogin({
-              oAuthToken: accessToken,
+            const googleAccessToken = resp.access_token;
+            if (!googleAccessToken)
+              throw new Error("Google access_token이 없어요.");
+
+            const data = (await authAPIService.googleOauthLogin({
+              oAuthToken: googleAccessToken,
               provider: "GOOGLE",
+            })) as BackendLoginResponse;
+
+            if (!data?.accessToken || !data?.refreshToken) {
+              throw new Error("백엔드 토큰 응답 형식이 예상과 달라요.");
+            }
+
+            tokenStore.set({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
             });
 
-            setMsg(`로그인 성공!\n${JSON.stringify(data, null, 2)}`);
+            setMsg("로그인 성공! 이동 중...");
+
+            router.replace("/");
           } catch (e: unknown) {
             setMsg(e instanceof Error ? e.message : String(e));
           }
@@ -71,7 +94,7 @@ export default function GoogleLoginPage() {
     return () => {
       document.head.removeChild(script);
     };
-  }, [clientId]);
+  }, [clientId, router]);
 
   const onClickLogin = () => {
     if (!tokenClientRef.current) {

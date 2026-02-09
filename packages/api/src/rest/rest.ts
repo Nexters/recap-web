@@ -9,6 +9,19 @@ import type {
 type RestAPIInstanceInit = {
   headers?: Record<string, string>;
   withCredentials?: boolean;
+
+  onRequest?: (ctx: {
+    url: string;
+    init: RequestInit;
+  }) =>
+    | Promise<{ url: string; init: RequestInit }>
+    | { url: string; init: RequestInit };
+
+  onResponse?: (ctx: {
+    url: string;
+    init: RequestInit;
+    res: Response;
+  }) => Promise<Response> | Response;
 };
 
 export class RestAPIInstance {
@@ -18,17 +31,27 @@ export class RestAPIInstance {
   ) {}
 
   async request(input: RequestInfo, init?: RequestInit) {
-    return fetch(input, init);
+    let next = { url: String(input), init: init ?? {} };
+
+    if (this.init.onRequest) {
+      next = await this.init.onRequest(next);
+    }
+
+    const res = await fetch(next.url, next.init);
+
+    if (this.init.onResponse) {
+      return this.init.onResponse({ ...next, res });
+    }
+
+    return res;
   }
 
   getBaseURL() {
     return this.baseURL;
   }
-
   getDefaultHeaders() {
     return this.init.headers ?? {};
   }
-
   getWithCredentials() {
     return this.init.withCredentials ?? true;
   }
