@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="mx-auto max-w-7xl bg-gray-100">
         <ReactQueryProviders>{children}</ReactQueryProviders>
       </body>
     </html>

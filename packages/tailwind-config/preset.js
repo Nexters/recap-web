@@ -26,6 +26,32 @@ const preset = {
       colors: {
         gray: {
           75: "var(--color-gray-75)",
+          100: "var(--color-gray-100)",
+          200: "var(--color-gray-200)",
+          300: "var(--color-gray-300)",
+          400: "var(--color-gray-400)",
+          500: "var(--color-gray-500)",
+          600: "var(--color-gray-600)",
+          800: "var(--color-gray-800)",
+          900: "var(--color-gray-900)",
+        },
+        blue: {
+          50: "var(--color-blue-50)",
+          75: "var(--color-blue-75)",
+          100: "var(--color-blue-100)",
+          200: "var(--color-blue-200)",
+          300: "var(--color-blue-300)",
+          400: "var(--color-blue-400)",
+          500: "var(--color-blue-500)",
+        },
+        positive: {
+          DEFAULT: "var(--color-positive)",
+        },
+        cautionary: {
+          DEFAULT: "var(--color-cautionary)",
+        },
+        destructive: {
+          DEFAULT: "var(--color-destructive)",
         },
       },
       fontSize: {

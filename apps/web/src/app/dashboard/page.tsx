@@ -1,8 +1,6 @@
-"use client";
+import { Badge, type WeeklyBarDatum } from "@recap/ui";
 
-import * as React from "react";
-import { formatDayHhMmFromWeekAvg, type WeeklyBarDatum } from "@recap/ui";
-
+import GNB from "@/components/GNB";
 import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
 
 type WeekDatum = {
@@ -13,7 +11,7 @@ type WeekDatum = {
   highlight?: boolean;
 };
 
-export default function ScreenTimeWeeklyCard() {
+export default function DashboardPage() {
   const data: WeekDatum[] = [
     {
       weekLabel: "1주",
@@ -42,9 +40,6 @@ export default function ScreenTimeWeeklyCard() {
     },
   ];
 
-  const selectedIndex = 0;
-  const weekAvgForTitle = data[selectedIndex]?.avgMinutes ?? 0;
-
   const chartData: WeeklyBarDatum[] = data.map((d, idx) => ({
     key: `${idx}-${d.weekLabel}`,
     weekLabel: d.weekLabel,
@@ -54,21 +49,27 @@ export default function ScreenTimeWeeklyCard() {
   }));
 
   return (
-    <div className="w-full max-w-[980px] rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-      <div className="flex items-start justify-between gap-6 p-6">
-        <div className="min-w-[260px]">
-          <div className="text-[15px] font-medium text-gray-700">
+    <div className="mt-20">
+      <GNB />
+
+      <div className="mt-7 flex rounded-[1.25rem] bg-white">
+        <div className="p-10">
+          <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
             이번주 평균 스크린타임
-          </div>
-          <div className="mt-2 text-[28px] font-semibold tracking-tight text-gray-900">
-            {formatDayHhMmFromWeekAvg(weekAvgForTitle)}
-          </div>
+          </h2>
+
+          <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
+            하루 109시간 2분
+          </h3>
         </div>
 
-        <div className="flex flex-1 flex-col">
-          <div className="flex items-center justify-start"></div>
+        <div className="w-full px-6 pt-10 pb-3">
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">오늘</Badge>
+            <Badge>주간</Badge>
+          </div>
 
-          <div className="mt-5">
+          <div className="mt-12">
             <ScreenTimeWeeklyBarChart
               data={chartData}
               height={140}
