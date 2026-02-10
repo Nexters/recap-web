@@ -2,8 +2,8 @@
 
 import { Badge } from "@recap/ui";
 
-import GNB from "../components/GNB";
-import ScreenTimeWeeklyCard from "../components/ScreenTimeWeeklyCard";
+import GNB from "@/components/GNB";
+import ScreenTimeWeeklyCard from "@/components/ScreenTimeWeeklyCard";
 
 export default function Page() {
   //   const qc = createQueryClient();

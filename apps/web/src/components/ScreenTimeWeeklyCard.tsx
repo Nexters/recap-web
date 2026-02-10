@@ -3,7 +3,7 @@
 import * as React from "react";
 import { formatDayHhMmFromWeekAvg, type WeeklyBarDatum } from "@recap/ui";
 
-import { ScreenTimeWeeklyBarChart } from "./ScreenTimeWeeklyBarChart";
+import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
 
 type WeekDatum = {
   weekLabel: string;
