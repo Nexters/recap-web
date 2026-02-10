@@ -71,7 +71,7 @@ export default defineConfig(({ mode }) => {
       minify: !isDev,
       rollupOptions: {
         input: {
-          popup: resolve(__dirname, "src/popup/index.html"),
+          sidePanel: resolve(__dirname, "src/side-panel/index.html"),
           background: resolve(__dirname, "src/background/index.ts"),
           content: resolve(__dirname, "src/content/index.ts"),
         },

@@ -19,7 +19,7 @@ function isActive(session: StorageSession): boolean {
   return !session.closedAt || session.closedAt === session.visitedAt;
 }
 
-export function Popup() {
+export function SidePanel() {
   const [currentUrl, setCurrentUrl] = useState<string>("");
   const [sessions, setSessions] = useState<StorageSession[]>([]);
 
@@ -50,7 +50,7 @@ export function Popup() {
   }, []);
 
   return (
-    <div className="w-80 min-h-[200px] p-5 flex flex-col gap-4 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-gray-200 font-sans">
+    <div className="w-full min-h-screen p-5 flex flex-col gap-4 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-gray-200 font-sans">
       <h1 className="text-xl font-semibold text-white pb-3 border-b border-white/10">
         My Extension
       </h1>
@@ -68,11 +68,11 @@ export function Popup() {
         </span>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 flex-1">
         <span className="text-xs text-gray-500 uppercase tracking-wide">
           Pages Visited ({sessions.length}):
         </span>
-        <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto">
+        <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
           {sessions.length === 0 ? (
             <p className="text-xs text-gray-500 text-center py-2">
               No sessions yet

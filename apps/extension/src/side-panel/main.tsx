@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { Popup } from "./Popup";
+import { SidePanel } from "./SidePanel";
 
 import "../globals.css";
 
@@ -9,7 +9,7 @@ const container = document.getElementById("root");
 if (container) {
   createRoot(container).render(
     <StrictMode>
-      <Popup />
+      <SidePanel />
     </StrictMode>,
   );
 }

@@ -15,6 +15,14 @@ browser.runtime.onInstalled.addListener((): void => {
   console.log("Extension installed");
 });
 
+browser.action.onClicked.addListener(async (tab) => {
+  if (tab.id) {
+    if (chrome?.sidePanel) {
+      await chrome.sidePanel.open({ tabId: tab.id });
+    }
+  }
+});
+
 browser.tabs.onRemoved.addListener(async (tabId) => {
   console.log("Background: Tab removed >>>>>", tabId);
   deleteBrowserSession(String(tabId));
