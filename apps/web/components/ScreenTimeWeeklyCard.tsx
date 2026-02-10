@@ -3,10 +3,7 @@
 import * as React from "react";
 import { formatDayHhMmFromWeekAvg, type WeeklyBarDatum } from "@recap/ui";
 
-import { ScreenTimeToggle, ScreenTimeTogglePill } from "./ScreenTimeToggle";
 import { ScreenTimeWeeklyBarChart } from "./ScreenTimeWeeklyBarChart";
-
-type Mode = "today" | "week";
 
 type WeekDatum = {
   weekLabel: string;
@@ -17,8 +14,6 @@ type WeekDatum = {
 };
 
 export default function ScreenTimeWeeklyCard() {
-  const [mode, setMode] = React.useState<Mode>("week");
-
   const data: WeekDatum[] = [
     {
       weekLabel: "1주",
@@ -56,7 +51,6 @@ export default function ScreenTimeWeeklyCard() {
     rangeLabel: d.rangeLabel,
     totalMinutes: d.totalMinutes,
     avgMinutes: d.avgMinutes,
-    highlightLabel: d.highlight ? "박" : undefined,
   }));
 
   return (
@@ -72,17 +66,7 @@ export default function ScreenTimeWeeklyCard() {
         </div>
 
         <div className="flex flex-1 flex-col">
-          <div className="flex items-center justify-start">
-            <ScreenTimeToggle
-              type="single"
-              value={mode}
-              onValueChange={(v) => (v ? setMode(v as Mode) : null)}
-              aria-label="기간 선택"
-            >
-              <ScreenTimeTogglePill value="today">오늘</ScreenTimeTogglePill>
-              <ScreenTimeTogglePill value="week">주간</ScreenTimeTogglePill>
-            </ScreenTimeToggle>
-          </div>
+          <div className="flex items-center justify-start"></div>
 
           <div className="mt-5">
             <ScreenTimeWeeklyBarChart
@@ -91,10 +75,6 @@ export default function ScreenTimeWeeklyCard() {
               minBarHeight={10}
               striped
             />
-
-            <div className="mt-3 text-xs text-gray-400">
-              * 주간 데이터를 기준으로 막대 높이가 스케일링됩니다.
-            </div>
           </div>
         </div>
       </div>

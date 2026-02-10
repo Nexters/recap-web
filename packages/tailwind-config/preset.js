@@ -1,8 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 const preset = {
-  // 추후 extension 상황에 따라 prefix 추가
-  //   prefix: "rc-",
-
   theme: {
     extend: {
       fontFamily: {
@@ -18,9 +15,18 @@ const preset = {
           "sans-serif",
         ],
       },
+      backgroundImage: {
+        "gradient-01": "var(--gradient-01)",
+        "gradient-02": "var(--gradient-02)",
+        "gradient-03": "var(--gradient-03)",
+        "gradient-04": "var(--gradient-04)",
+        "gradient-05": "var(--gradient-05)",
+        "gradient-06": "var(--gradient-06)",
+      },
       colors: {
         gray: {
           75: "var(--color-gray-75)",
+          100: "var(--color-gray-100)",
         },
         bg: "var(--color-bg)",
         surface: "var(--color-surface)",

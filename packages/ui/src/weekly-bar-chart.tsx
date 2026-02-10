@@ -24,13 +24,10 @@ export type WeeklyBarChartProps = {
   height?: number;
   minBarHeight?: number;
   striped?: boolean;
-  stripeAssetUrl?: string;
   flexWeights?: number[];
 
-  // 스타일 오버라이드
   barWrapClassName?: string;
   barClassName?: string;
-  badgeClassName?: string;
   labelClassName?: string;
   tooltipContentClassName?: string;
   tooltipArrowClassName?: string;
@@ -56,12 +53,9 @@ export function WeeklyBarChart({
   height = 140,
   minBarHeight = 10,
   striped = true,
-  stripeAssetUrl,
   flexWeights,
-
   barWrapClassName,
   barClassName,
-  badgeClassName,
   labelClassName,
   tooltipContentClassName,
   tooltipArrowClassName,
@@ -97,19 +91,6 @@ export function WeeklyBarChart({
                         className="group relative w-full focus:outline-none"
                         aria-label={`${d.weekLabel} 스크린타임`}
                       >
-                        {d.highlightLabel && (
-                          <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                            <span
-                              className={cn(
-                                "inline-flex h-6 items-center rounded-full px-2 text-xs font-semibold shadow-sm",
-                                badgeClassName,
-                              )}
-                            >
-                              {d.highlightLabel}
-                            </span>
-                          </div>
-                        )}
-
                         <div
                           className={cn(
                             "relative mx-auto w-full overflow-hidden rounded-xl",
@@ -122,10 +103,17 @@ export function WeeklyBarChart({
                           />
 
                           {striped && (
-                            <StripeOverlay stripeAssetUrl={stripeAssetUrl} />
+                            <div
+                              className="absolute inset-0 bg-blue-100"
+                              style={{
+                                WebkitMaskImage:
+                                  "repeating-linear-gradient(135deg, #000 0px, #000 1px, transparent 1px, transparent 12px)",
+                                maskImage:
+                                  "repeating-linear-gradient(135deg, #000 0px, #000 1px, transparent 1px, transparent 12px)",
+                                transform: "translateZ(0)",
+                              }}
+                            />
                           )}
-
-                          {/* optional shine layer: web에서 barWrapClassName에 넣어도 됨 */}
                         </div>
                       </button>
                     </TooltipTrigger>
@@ -161,30 +149,5 @@ export function WeeklyBarChart({
         </div>
       </div>
     </TooltipProvider>
-  );
-}
-
-function StripeOverlay({ stripeAssetUrl }: { stripeAssetUrl?: string }) {
-  if (stripeAssetUrl) {
-    return (
-      <div
-        className="absolute inset-0 opacity-60"
-        style={{
-          backgroundImage: `url(${stripeAssetUrl})`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "auto",
-        }}
-      />
-    );
-  }
-
-  return (
-    <div
-      className="absolute inset-0 opacity-60"
-      style={{
-        backgroundImage:
-          "repeating-linear-gradient(135deg, rgba(255,255,255,0.65) 0px, rgba(255,255,255,0.65) 6px, rgba(255,255,255,0) 6px, rgba(255,255,255,0) 12px)",
-      }}
-    />
   );
 }

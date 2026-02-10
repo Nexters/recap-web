@@ -1,5 +1,7 @@
 "use client";
 
+import { Badge } from "@recap/ui";
+
 import ScreenTimeWeeklyCard from "../components/ScreenTimeWeeklyCard";
 
 // export default async function Page() {
@@ -17,6 +19,8 @@ export default function Page() {
     <div className="mt-20 ml-20">
       {/* <GNB /> */}
       <ScreenTimeWeeklyCard />
+      <Badge>오늘</Badge>
+      <Badge variant="secondary">주간</Badge>
     </div>
   );
 }
