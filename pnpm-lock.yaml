@@ -81,9 +81,21 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0
     devDependencies:
+      '@recap/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@recap/react-query':
+        specifier: workspace:*
+        version: link:../../packages/react-query-config
+      '@recap/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      '@recap/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@recap/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
