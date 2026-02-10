@@ -1,6 +1,6 @@
 "use client";
 
-import GNB from "components/GNB";
+import ScreenTimeWeeklyCard from "../components/ScreenTimeWeeklyCard";
 
 // export default async function Page() {
 
@@ -14,8 +14,9 @@ export default function Page() {
 
   // const state = dehydrateState(qc);
   return (
-    <div className="w-100 mt-20 ml-20">
-      <GNB />
+    <div className="mt-20 ml-20">
+      {/* <GNB /> */}
+      <ScreenTimeWeeklyCard />
     </div>
   );
 }
