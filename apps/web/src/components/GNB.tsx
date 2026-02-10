@@ -1,4 +1,4 @@
-import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "components/GNBTabs";
+import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "@/components/GNBTabs";
 
 const GNB = () => {
   return (

@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authAPIService } from "app/(auth)/src/service";
 
 import { tokenStore } from "../../../../lib/token-store";
+import { authAPIService } from "../../src/service";
 
 type BackendLoginResponse = {
   accessToken: string;

@@ -26,25 +26,7 @@ const preset = {
       colors: {
         gray: {
           75: "var(--color-gray-75)",
-          100: "var(--color-gray-100)",
         },
-        bg: "var(--color-bg)",
-        surface: "var(--color-surface)",
-
-        text: "var(--color-text)",
-        subtext: "var(--color-subtext)",
-        "icon-sub": "var(--color-icon-sub)",
-
-        border1: "var(--color-border-1)",
-        border2: "var(--color-border-2)",
-
-        primary: "var(--color-primary)",
-        "primary-weak": "var(--color-primary-weak)",
-        "primary-strong": "var(--color-primary-strong)",
-
-        positive: "var(--color-positive)",
-        cautionary: "var(--color-cautionary)",
-        destructive: "var(--color-destructive)",
       },
       fontSize: {
         "display-1": [
