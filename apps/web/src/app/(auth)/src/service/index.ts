@@ -1,5 +1,6 @@
 import { generateRestAPI } from "@recap/api";
-import { AuthAPIService } from "app/(auth)/src/service/auth-api.service";
+
+import { AuthAPIService } from "@/app/(auth)/src/service/auth-api.service";
 
 export const authAPIService = new AuthAPIService(
   generateRestAPI(

@@ -1,0 +1,14 @@
+{
+  "name": "@recap/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": "./src/index.css",
+    "./primitives.css": "./src/primitives.css",
+    "./semantics.css": "./src/semantics.css",
+    "./gradients.css": "./src/gradients.css"
+  }
+}

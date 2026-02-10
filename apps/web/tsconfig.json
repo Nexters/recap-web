@@ -1,7 +1,10 @@
 {
   "extends": "@recap/typescript-config/nextjs",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
