@@ -3,7 +3,7 @@ import {
   deleteBrowserSession,
   getBrowserSession,
   visitBrowserSession,
-} from "src/services/browser-service";
+} from "src/services/browser.service";
 import browser from "webextension-polyfill";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
