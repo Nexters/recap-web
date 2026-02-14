@@ -1,3 +1,5 @@
+import { authAPIService } from "src/services/auth";
+import type { BackendLoginResponse } from "src/services/auth/schema/google-oauth-login.schema";
 import {
   addBrowserSession,
   deleteBrowserSession,
@@ -47,6 +49,20 @@ browser.runtime.onMessage.addListener(
           type: MESSAGE_TYPE.GET_PAGE_VISITED,
           data: sessions,
         };
+      });
+    }
+
+    if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        authAPIService
+          .googleOauthLogin({
+            oAuthToken: token,
+            provider: "GOOGLE",
+          })
+          .then((data: unknown) => {
+            const res = data as BackendLoginResponse;
+            console.log("Background: Backend Google login data >>>>>", res);
+          });
       });
     }
 
