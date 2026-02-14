@@ -1,6 +1,5 @@
 import {
   addBrowserSession,
-  closeBrowserSession,
   deleteBrowserSession,
   getBrowserSession,
   visitBrowserSession,
@@ -11,10 +10,6 @@ import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
 console.log("Background script loaded");
 
-browser.runtime.onInstalled.addListener((): void => {
-  console.log("Extension installed");
-});
-
 browser.action.onClicked.addListener(async (tab) => {
   if (tab.id) {
     if (chrome?.sidePanel) {
@@ -24,14 +19,14 @@ browser.action.onClicked.addListener(async (tab) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  console.log("Background: Tab removed >>>>>", tabId);
+  //console.log("Background: Tab removed >>>>>", tabId);
   deleteBrowserSession(String(tabId));
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  console.log("Background: Tab activated >>>>>", tabId);
-  const closedSession = await closeBrowserSession();
-  console.log("Closed session api payload >>>>>", closedSession);
+  //console.log("Background: Tab activated >>>>>", tabId);
+  //const closedSession = await closeBrowserSession();
+  //console.log("Closed session api payload >>>>>", closedSession);
   await visitBrowserSession(String(tabId));
 });
 

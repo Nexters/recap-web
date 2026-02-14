@@ -26,7 +26,7 @@ async function clearBrowserSession() {
 async function deleteBrowserSession(tabId: string) {
   if (!tabId) return;
   const sessions = await getBrowserSession();
-  console.log("deleteBrowserSession >>>>>>>>>>>>", sessions, tabId);
+
   delete sessions[tabId];
   await setBrowserSession(sessions);
 }
@@ -34,7 +34,7 @@ async function deleteBrowserSession(tabId: string) {
 async function addBrowserSession(tabId: string, data: PageSnapshot) {
   if (!tabId) return;
   const sessions = await getBrowserSession();
-  console.log("addBrowserSession >>>>>>>>>>>>", sessions, tabId, data);
+
   sessions[tabId] = {
     ...data,
     visitedAt: new Date().toISOString(),
@@ -47,7 +47,7 @@ async function addBrowserSession(tabId: string, data: PageSnapshot) {
 async function closeBrowserSession() {
   let result = {};
   const sessions = await getBrowserSession();
-  console.log("closeBrowserSession >>>>>>>>>>>>", sessions);
+
   for (const session of Object.values(sessions)) {
     if (session.closedAt === null) {
       session.closedAt = new Date().toISOString();
@@ -60,7 +60,7 @@ async function closeBrowserSession() {
 
 async function visitBrowserSession(tabId: string) {
   const sessions = await getBrowserSession();
-  console.log("visitBrowserSession >>>>>>>>>>>>", sessions, tabId);
+
   if (!sessions[tabId]) return;
   sessions[tabId].visitedAt = new Date().toISOString();
   sessions[tabId].closedAt = null;
