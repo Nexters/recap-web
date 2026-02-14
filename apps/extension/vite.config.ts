@@ -2,9 +2,9 @@ import { crx } from "@crxjs/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 
-import manifest from "./src/manifest.config";
+import { createManifest } from "./src/manifest.config";
 
 const args = process.argv;
 const browserArg = args.find((arg) => arg.startsWith("--browser="));
@@ -12,9 +12,10 @@ const browser = browserArg?.split("=")[1] || "chrome";
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
+  const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    plugins: [react(), tailwindcss(), crx({ manifest })],
+    plugins: [react(), tailwindcss(), crx({ manifest: createManifest(env) })],
     base: "",
     resolve: {
       alias: {
