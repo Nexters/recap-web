@@ -3,6 +3,7 @@ import type { PageSnapshot, StorageSession } from "src/types/storage";
 export const MESSAGE_TYPE = {
   PAGE_VISITED: "PAGE_VISITED",
   GET_PAGE_VISITED: "GET_PAGE_VISITED",
+  GOOGLE_LOGIN: "GOOGLE_LOGIN",
 } as const;
 
 export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE];
@@ -17,4 +18,11 @@ export type GetPageVisitedMessage = {
   data: StorageSession[];
 };
 
-export type ExtensionMessage = PageVisitedMessage | GetPageVisitedMessage;
+export type GoogleLoginMessage = {
+  type: typeof MESSAGE_TYPE.GOOGLE_LOGIN;
+};
+
+export type ExtensionMessage =
+  | PageVisitedMessage
+  | GetPageVisitedMessage
+  | GoogleLoginMessage;
