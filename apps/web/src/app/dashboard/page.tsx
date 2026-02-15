@@ -1,5 +1,6 @@
 import CategoryAnalysis from "@/app/dashboard/src/CategoryAnalysis";
 import ScreenTime from "@/app/dashboard/src/ScreenTime";
+import TodayTimeThief from "@/app/dashboard/src/TodayTimeThief";
 import WorkPattern from "@/app/dashboard/src/WorkPattern";
 import GNB from "@/components/GNB";
 
@@ -14,6 +15,8 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 gap-7">
         <WorkPattern />
+
+        <TodayTimeThief />
       </div>
     </div>
   );
