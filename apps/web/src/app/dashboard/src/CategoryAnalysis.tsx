@@ -10,6 +10,8 @@ type AppIcon = {
   textClassName?: string;
 };
 
+const COLS = 2;
+
 const DEFAULT_APPS: AppIcon[] = [
   { key: "zigzag", label: "Z", bgClassName: "bg-fuchsia-400" },
   {
@@ -24,6 +26,10 @@ const DEFAULT_APPS: AppIcon[] = [
 ];
 
 const CategoryAnalysis = () => {
+  const items = [...Array(6)];
+
+  const rowCount = Math.ceil(items.length / COLS);
+
   return (
     <div className="flex rounded-[1.25rem] bg-white">
       <div className="w-full p-10">
@@ -46,28 +52,39 @@ const CategoryAnalysis = () => {
           <Badge variant="secondary">콘텐츠</Badge>
         </div>
 
-        <div className="mt-9 grid grid-cols-2 gap-8">
-          {[...Array(6)].map((_, idx) => (
-            <div className="flex items-center justify-between" key={idx}>
-              <div className="flex items-center gap-2">
-                <div className="flex size-4.5 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-600">
-                  1
+        <div className="mt-5 grid grid-cols-2 gap-x-8">
+          {items.map((_, idx) => {
+            const rowIndex = Math.floor(idx / COLS);
+            const isLastRow = rowIndex === rowCount - 1;
+
+            return (
+              <div
+                key={idx}
+                className={cn(
+                  "flex items-center justify-between py-4",
+                  !isLastRow && "border-b border-gray-200",
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex size-4.5 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-600">
+                    1
+                  </div>
+
+                  <p className="text-subtitle-1-sb text-gray-900">생활/편의</p>
+
+                  <p className="text-subtitle-2-rg text-gray-800">20분</p>
                 </div>
 
-                <p className="text-subtitle-1-sb text-gray-900">생활/편의</p>
-
-                <p className="text-subtitle-2-rg text-gray-800">20분</p>
+                <div className="flex items-center">
+                  {DEFAULT_APPS.map((icon, idx) => (
+                    <div key={icon.key} className={cn(idx !== 0 && "-ml-1")}>
+                      <AppIconPill icon={icon} />
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <div className="flex items-center">
-                {DEFAULT_APPS.map((icon, idx) => (
-                  <div key={icon.key} className={cn(idx !== 0 && "-ml-1")}>
-                    <AppIconPill icon={icon} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
