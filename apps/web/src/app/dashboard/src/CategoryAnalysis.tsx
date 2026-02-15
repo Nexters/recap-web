@@ -1,7 +1,27 @@
 import React from "react";
-import { Badge } from "@recap/ui";
+import { Badge, cn } from "@recap/ui";
 
 import { BubbleCloudFalling } from "@/app/dashboard/src/BubbleCloud";
+
+type AppIcon = {
+  key: string;
+  label: string;
+  bgClassName: string;
+  textClassName?: string;
+};
+
+const DEFAULT_APPS: AppIcon[] = [
+  { key: "zigzag", label: "Z", bgClassName: "bg-fuchsia-400" },
+  {
+    key: "wconcept",
+    label: "W",
+    bgClassName: "bg-yellow-300",
+    textClassName: "text-gray-900",
+  },
+  { key: "coupang", label: "쿠", bgClassName: "bg-red-500" },
+  { key: "naver", label: "N", bgClassName: "bg-emerald-500" },
+  { key: "steam", label: "S", bgClassName: "bg-slate-900" },
+];
 
 const CategoryAnalysis = () => {
   return (
@@ -25,9 +45,49 @@ const CategoryAnalysis = () => {
           <Badge variant="secondary">디자인</Badge>
           <Badge variant="secondary">콘텐츠</Badge>
         </div>
+
+        <div className="mt-9 grid grid-cols-2 gap-8">
+          {[...Array(6)].map((_, idx) => (
+            <div className="flex items-center justify-between" key={idx}>
+              <div className="flex items-center gap-2">
+                <div className="flex size-4.5 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-600">
+                  1
+                </div>
+
+                <p className="text-subtitle-1-sb text-gray-900">생활/편의</p>
+
+                <p className="text-subtitle-2-rg text-gray-800">20분</p>
+              </div>
+
+              <div className="flex items-center">
+                {DEFAULT_APPS.map((icon, idx) => (
+                  <div key={icon.key} className={cn(idx !== 0 && "-ml-1")}>
+                    <AppIconPill icon={icon} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 export default CategoryAnalysis;
+
+function AppIconPill({ icon }: { icon: AppIcon }) {
+  return (
+    <div
+      className={[
+        "flex h-7 w-7 items-center justify-center rounded-full",
+        "ring-2 ring-white",
+        icon.bgClassName,
+        icon.textClassName ?? "text-white",
+      ].join(" ")}
+      title={icon.key}
+    >
+      <span className="text-xs font-bold">{icon.label}</span>
+    </div>
+  );
+}
