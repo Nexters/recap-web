@@ -1,17 +1,21 @@
-import { MESSAGE_TYPE } from "src/types/messages";
+import { useState } from "react";
+
+import { NAVIGATION_TAB } from "@/const/navigation.const";
+import AiRecapView from "@/features/ai-recap/components/AiRecapView";
+import AnalysisView from "@/features/analysis/components/AnalysisView";
+import AuthGuard from "@/features/auth/components/AuthGuard";
+import NavigationTabs from "@/features/layout/components/NavigationTabs";
 
 export function SidePanel() {
-  const handleGoogleLogin = () => {
-    chrome.runtime.sendMessage({ type: MESSAGE_TYPE.GOOGLE_LOGIN });
-  };
+  const [activeTab, setActiveTab] = useState<string>(NAVIGATION_TAB.ANALYSIS);
+
   return (
-    <div className="p-2">
-      <button
-        className="bg-blue-500 text-white p-2 rounded-md"
-        onClick={handleGoogleLogin}
-      >
-        Google Login
-      </button>
-    </div>
+    <>
+      <NavigationTabs value={activeTab} onValueChange={setActiveTab} />
+      <AuthGuard>
+        {activeTab === NAVIGATION_TAB.AI_RECAP && <AiRecapView />}
+        {activeTab === NAVIGATION_TAB.ANALYSIS && <AnalysisView />}
+      </AuthGuard>
+    </>
   );
 }
