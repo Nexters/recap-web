@@ -11,8 +11,8 @@ import {
 
 export type WeeklyBarDatum = {
   key: string;
-  weekLabel: string;
-  rangeLabel: string;
+  label: string;
+  subLabel?: string;
   totalMinutes: number;
   avgMinutes: number;
   highlightLabel?: string;
@@ -89,11 +89,11 @@ export function WeeklyBarChart({
                       <button
                         type="button"
                         className="group relative w-full focus:outline-none"
-                        aria-label={`${d.weekLabel} 스크린타임`}
+                        aria-label={`${d.label} 스크린타임`}
                       >
                         <div
                           className={cn(
-                            "relative mx-auto w-full overflow-hidden rounded-xl",
+                            "relative mx-auto w-full overflow-hidden rounded-t-xl",
                             barWrapClassName,
                           )}
                           style={{ height: barH }}
@@ -120,7 +120,7 @@ export function WeeklyBarChart({
 
                     <TooltipContent className={cn(tooltipContentClassName)}>
                       <div className="text-xs font-medium text-gray-500">
-                        {d.rangeLabel}
+                        {d.subLabel}
                       </div>
 
                       <div className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
@@ -140,7 +140,7 @@ export function WeeklyBarChart({
                   </Tooltip>
 
                   <div className={cn("text-xs font-medium", labelClassName)}>
-                    {d.weekLabel}
+                    {d.label}
                   </div>
                 </div>
               );

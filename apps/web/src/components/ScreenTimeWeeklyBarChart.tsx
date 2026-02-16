@@ -14,7 +14,7 @@ export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
       {...props}
       labelClassName={cn("text-gray-500")}
       barWrapClassName={cn(
-        "shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] overflow-hidden rounded-xl transition-transform duration-150 group-hover:-translate-y-[1px]",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] overflow-hidden transition-transform duration-150 group-hover:-translate-y-[1px]",
       )}
       barClassName={cn("bg-gradient-03")}
       tooltipContentClassName={cn(
