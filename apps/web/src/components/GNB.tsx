@@ -20,11 +20,11 @@ const TAB_TO_PATH: Record<TabValue, string> = {
   settings: "/settings",
 };
 
-function getTabFromPath(pathname: string): TabValue {
+const getTabFromPath = (pathname: string): TabValue => {
   if (pathname.startsWith("/ai-recap")) return "ai-recap";
   if (pathname.startsWith("/settings")) return "settings";
   return "analysis";
-}
+};
 
 const GNB = () => {
   const router = useRouter();

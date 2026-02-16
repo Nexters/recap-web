@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { cn } from "@recap/ui";
 
 type BubbleDatum = {
@@ -22,7 +22,7 @@ type BubbleBody = BubbleDatum & {
   sleepFrames: number;
 };
 
-export function BubbleCloudFalling() {
+const BubbleCloudFalling = () => {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const bubbleRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const rafRef = useRef<number | null>(null);
@@ -449,4 +449,6 @@ export function BubbleCloudFalling() {
       </div>
     </div>
   );
-}
+};
+
+export default BubbleCloudFalling;

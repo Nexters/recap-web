@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
 
-import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
+import ScreenTimeWeeklyBarChart from "@/components/ScreenTimeWeeklyBarChart";
 
 type ViewMode = "today" | "week";
 
