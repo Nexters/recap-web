@@ -1,5 +1,6 @@
-import { defaultStorage, type StorageData } from "src/types/storage";
 import browser from "webextension-polyfill";
+
+import { defaultStorage, type StorageData } from "@/types/storage";
 
 export async function getStorage<K extends keyof StorageData>(
   keys: K[],

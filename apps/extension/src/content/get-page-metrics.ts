@@ -1,4 +1,4 @@
-import type { PageSnapshot } from "src/types/storage";
+import type { PageSnapshot } from "@/types/storage";
 
 function getPageSnapshot(): PageSnapshot {
   const description =
