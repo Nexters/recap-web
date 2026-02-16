@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@recap/tokens";
+
+@config "../../tailwind.config.js";
+
+#root {
+  width: 100%;
+  height: 100%;
+}

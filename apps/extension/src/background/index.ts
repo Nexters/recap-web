@@ -1,79 +1,71 @@
-/**
- * Background Script (Service Worker in Chrome MV3)
- *
- * This script runs in the background and acts as a central hub for
- * communication between different parts of the extension.
- *
- * Communication Flow:
- * ┌─────────────────────────────────────────────────────────────────────┐
- * │                       BACKGROUND SCRIPT                             │
- * │                                                                     │
- * │  Content Script ──PAGE_VISITED──► Background                        │
- * │    (page loaded)                   │                                │
- * │                                    ▼                                │
- * │                            Increment visitCount                     │
- * │                            in browser.storage                       │
- * │                                                                     │
- * │  Popup ──GET_VISIT_COUNT──► Background                              │
- * │                               │                                     │
- * │                               ▼                                     │
- * │                         Read visitCount                             │
- * │                         from storage                                │
- * │                               │                                     │
- * │  Popup ◄──VISIT_COUNT_RESPONSE──┘                                   │
- * └─────────────────────────────────────────────────────────────────────┘
- *
- * Message Types:
- * - PAGE_VISITED (incoming from content): A page was visited
- * - GET_VISIT_COUNT (incoming from popup): Request for total visit count
- * - VISIT_COUNT_RESPONSE (outgoing to popup): Response with visit count
- */
-
+import { authAPIService } from "src/services/auth";
+import type { BackendLoginResponse } from "src/services/auth/schema/google-oauth-login.schema";
+import {
+  addBrowserSession,
+  deleteBrowserSession,
+  getBrowserSession,
+  visitBrowserSession,
+} from "src/services/browser.service";
 import browser from "webextension-polyfill";
 
-import type { ExtensionMessage } from "../types/messages";
-import { getStorage, setStorage } from "../utils/storage";
+import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
 console.log("Background script loaded");
 
-browser.runtime.onInstalled.addListener((): void => {
-  console.log("Extension installed");
+browser.action.onClicked.addListener(async (tab) => {
+  if (tab.id) {
+    if (chrome?.sidePanel) {
+      await chrome.sidePanel.open({ tabId: tab.id });
+    }
+  }
 });
 
-// Listen for messages from popup or content scripts
+browser.tabs.onRemoved.addListener(async (tabId) => {
+  //console.log("Background: Tab removed >>>>>", tabId);
+  deleteBrowserSession(String(tabId));
+});
+
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+  //console.log("Background: Tab activated >>>>>", tabId);
+  //const closedSession = await closeBrowserSession();
+  //console.log("Closed session api payload >>>>>", closedSession);
+  await visitBrowserSession(String(tabId));
+});
+
 browser.runtime.onMessage.addListener(
   (
     message: unknown,
-    _sender: browser.Runtime.MessageSender,
+    sender: browser.Runtime.MessageSender,
   ): Promise<unknown> | void => {
     const msg = message as ExtensionMessage;
 
-    // Content script notifies us when a page is visited
-    if (msg.type === "PAGE_VISITED") {
-      console.log("Page visited:", msg.data.title, "-", msg.data.url);
-      console.log(
-        `  Words: ${msg.data.wordCount}, Links: ${msg.data.linkCount}, Images: ${msg.data.imageCount}`,
-      );
-
-      // Increment visit count and respond
-      return getStorage(["visitCount"]).then(({ visitCount }) => {
-        return setStorage({ visitCount: visitCount + 1 }).then(() => {
-          return { success: true };
-        });
-      });
+    if (msg.type === MESSAGE_TYPE.PAGE_VISITED) {
+      return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
     }
 
-    // Popup requests the visit count
-    if (msg.type === "GET_VISIT_COUNT") {
-      return getStorage(["visitCount"]).then(({ visitCount }) => {
+    if (msg.type === MESSAGE_TYPE.GET_PAGE_VISITED) {
+      return getBrowserSession().then((sessions) => {
         return {
-          type: "VISIT_COUNT_RESPONSE",
-          count: visitCount,
+          type: MESSAGE_TYPE.GET_PAGE_VISITED,
+          data: sessions,
         };
       });
     }
 
-    // Unknown message type - don't respond
+    if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        authAPIService
+          .googleOauthLogin({
+            oAuthToken: token,
+            provider: "GOOGLE",
+          })
+          .then((data: unknown) => {
+            const res = data as BackendLoginResponse;
+            console.log("Background: Backend Google login data >>>>>", res);
+          });
+      });
+    }
+
     return;
   },
 );

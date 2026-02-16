@@ -26,24 +26,62 @@ const preset = {
       colors: {
         gray: {
           75: "var(--color-gray-75)",
+          100: "var(--color-gray-100)",
+          200: "var(--color-gray-200)",
+          300: "var(--color-gray-300)",
+          400: "var(--color-gray-400)",
+          500: "var(--color-gray-500)",
+          600: "var(--color-gray-600)",
+          800: "var(--color-gray-800)",
+          900: "var(--color-gray-900)",
+        },
+        blue: {
+          50: "var(--color-blue-50)",
+          75: "var(--color-blue-75)",
+          100: "var(--color-blue-100)",
+          200: "var(--color-blue-200)",
+          300: "var(--color-blue-300)",
+          400: "var(--color-blue-400)",
+          500: "var(--color-blue-500)",
+        },
+        positive: {
+          DEFAULT: "var(--color-positive)",
+        },
+        cautionary: {
+          DEFAULT: "var(--color-cautionary)",
+        },
+        destructive: {
+          DEFAULT: "var(--color-destructive)",
         },
       },
       fontSize: {
         "display-1": [
           "2.5rem",
-          { lineHeight: "3.25rem", letterSpacing: "-0.002em" },
+          {
+            lineHeight: "3.25rem",
+            letterSpacing: "-0.002em",
+            fontWeight: "600",
+          },
         ],
         "display-2": [
           "2.25rem",
-          { lineHeight: "3rem", letterSpacing: "-0.002em" },
+          { lineHeight: "3rem", letterSpacing: "-0.002em", fontWeight: "600" },
         ],
         "display-3": [
           "2rem",
-          { lineHeight: "2.5rem", letterSpacing: "-0.002em" },
+          {
+            lineHeight: "2.5rem",
+            letterSpacing: "-0.002em",
+            fontWeight: "600",
+          },
         ],
         "title-1": [
           "1.75rem",
-          { lineHeight: "2.375rem", letterSpacing: "-0.024em" },
+          {
+            lineHeight: "2.375rem",
+            letterSpacing: "-0.024em",
+            fontWeight: "600",
+          },
         ],
         "title-2": [
           "1.5rem",
@@ -51,11 +89,11 @@ const preset = {
         ],
         "heading-sb": [
           "1.375rem",
-          { lineHeight: "2rem", letterSpacing: "-0.002em" },
+          { lineHeight: "2rem", letterSpacing: "-0.002em", fontWeight: "600" },
         ],
         "heading-md": [
           "1.375rem",
-          { lineHeight: "2rem", letterSpacing: "-0.004em" },
+          { lineHeight: "2rem", letterSpacing: "-0.004em", fontWeight: "500" },
         ],
         "heading-rg": [
           "1.375rem",
@@ -63,11 +101,15 @@ const preset = {
         ],
         "headline-sb": [
           "1.25rem",
-          { lineHeight: "1.75rem", letterSpacing: "-0.02em" },
+          {
+            lineHeight: "1.75rem",
+            letterSpacing: "-0.02em",
+            fontWeight: "600",
+          },
         ],
         "headline-md": [
           "1.25rem",
-          { lineHeight: "1.75rem", letterSpacing: "0em" },
+          { lineHeight: "1.75rem", letterSpacing: "0em", fontWeight: "500" },
         ],
         "headline-rg": [
           "1.25rem",
@@ -75,15 +117,27 @@ const preset = {
         ],
         "subtitle-1-sb": [
           "1.125rem",
-          { lineHeight: "1.5rem", letterSpacing: "-0.004em" },
+          {
+            lineHeight: "1.5rem",
+            letterSpacing: "-0.004em",
+            fontWeight: "600",
+          },
         ],
         "subtitle-1-md": [
           "1.125rem",
-          { lineHeight: "1.5rem", letterSpacing: "-0.002em" },
+          {
+            lineHeight: "1.5rem",
+            letterSpacing: "-0.002em",
+            fontWeight: "500",
+          },
         ],
         "subtitle-2-sb": [
           "0.9375rem",
-          { lineHeight: "1.5625rem", letterSpacing: "-0.004em" },
+          {
+            lineHeight: "1.5625rem",
+            letterSpacing: "-0.004em",
+            fontWeight: "600",
+          },
         ],
         "subtitle-2-rg": [
           "0.9375rem",
@@ -97,11 +151,19 @@ const preset = {
         "body-3": ["0.875rem", { lineHeight: "1.5rem", letterSpacing: "0em" }],
         "label-1": [
           "1rem",
-          { lineHeight: "1.25rem", letterSpacing: "0.0057em" },
+          {
+            lineHeight: "1.25rem",
+            letterSpacing: "0.0057em",
+            fontWeight: "600",
+          },
         ],
         "label-2": [
           "0.875rem",
-          { lineHeight: "1.125rem", letterSpacing: "0.0057em" },
+          {
+            lineHeight: "1.125rem",
+            letterSpacing: "0.0057em",
+            fontWeight: "600",
+          },
         ],
         "caption-1": [
           "0.75rem",
