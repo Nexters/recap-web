@@ -1,32 +1,28 @@
-/**
- * Message types for extension communication
- */
+import type { PageSnapshot, StorageSession } from "src/types/storage";
 
-// Content Script -> Background
-export interface PageVisitedMessage {
-  type: "PAGE_VISITED";
-  data: {
-    url: string;
-    title: string;
-    wordCount: number;
-    linkCount: number;
-    imageCount: number;
-  };
-}
+export const MESSAGE_TYPE = {
+  PAGE_VISITED: "PAGE_VISITED",
+  GET_PAGE_VISITED: "GET_PAGE_VISITED",
+  GOOGLE_LOGIN: "GOOGLE_LOGIN",
+} as const;
 
-// Popup -> Background
-export interface GetVisitCountMessage {
-  type: "GET_VISIT_COUNT";
-}
+export type MessageType = (typeof MESSAGE_TYPE)[keyof typeof MESSAGE_TYPE];
 
-// Background -> Popup
-export interface VisitCountResponseMessage {
-  type: "VISIT_COUNT_RESPONSE";
-  count: number;
-}
+export type PageVisitedMessage = {
+  type: typeof MESSAGE_TYPE.PAGE_VISITED;
+  data: PageSnapshot;
+};
 
-// Union type for all messages
+export type GetPageVisitedMessage = {
+  type: typeof MESSAGE_TYPE.GET_PAGE_VISITED;
+  data: StorageSession[];
+};
+
+export type GoogleLoginMessage = {
+  type: typeof MESSAGE_TYPE.GOOGLE_LOGIN;
+};
+
 export type ExtensionMessage =
   | PageVisitedMessage
-  | GetVisitCountMessage
-  | VisitCountResponseMessage;
+  | GetPageVisitedMessage
+  | GoogleLoginMessage;
