@@ -16,7 +16,7 @@ const GnbTabsList = React.forwardRef<
   <TabsList
     ref={ref}
     className={cn(
-      "flex items-center gap-2.5 p-2 rounded-full bg-gray-75 border border-solid border-gray-200",
+      "bg-gray-75 flex items-center gap-2.5 rounded-full border border-solid border-gray-200 p-2",
       className,
     )}
     {...props}
@@ -32,7 +32,7 @@ const GnbTabsTrigger = React.forwardRef<
   <TabsTrigger
     ref={ref}
     className={cn(
-      "rounded-full py-1.5 border border-transparent border-solid w-22.5 text-gray-500 text-subtitle-2-sb data-[state=active]:bg-gray-900 data-[state=active]:shadow-gnb data-[state=active]:text-white data-[state=active]:border-gray-75",
+      "text-subtitle-2-sb data-[state=active]:shadow-gnb data-[state=active]:border-gray-75 w-22.5 rounded-full border border-solid border-transparent py-1.5 text-gray-500 data-[state=active]:bg-gray-900 data-[state=active]:text-white",
       className,
     )}
     {...props}
