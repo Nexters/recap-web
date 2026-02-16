@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge, cn } from "@recap/ui";
 
-import { BubbleCloudFalling } from "@/app/dashboard/src/BubbleCloud";
+import { BubbleCloudFalling } from "@/app/analysis/src/components/BubbleCloud";
 
 type AppIcon = {
   key: string;
