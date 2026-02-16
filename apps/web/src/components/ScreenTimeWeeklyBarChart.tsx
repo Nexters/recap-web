@@ -1,13 +1,17 @@
 "use client";
 
-import * as React from "react";
 import { cn, WeeklyBarChart, type WeeklyBarDatum } from "@recap/ui";
 
-type Props = React.ComponentPropsWithoutRef<typeof WeeklyBarChart> & {
+interface ScreenTimeWeeklyBarChartProps extends React.ComponentPropsWithoutRef<
+  typeof WeeklyBarChart
+> {
   data: WeeklyBarDatum[];
-};
+}
 
-export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
+const ScreenTimeWeeklyBarChart = ({
+  className,
+  ...props
+}: ScreenTimeWeeklyBarChartProps) => {
   return (
     <WeeklyBarChart
       className={cn(className)}
@@ -22,4 +26,6 @@ export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
       )}
     />
   );
-}
+};
+
+export default ScreenTimeWeeklyBarChart;

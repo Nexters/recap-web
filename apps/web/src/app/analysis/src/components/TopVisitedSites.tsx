@@ -1,5 +1,3 @@
-import React from "react";
-
 const TopVisitedSites = () => {
   return (
     <div className="rounded-[1.25rem] bg-white p-10">
