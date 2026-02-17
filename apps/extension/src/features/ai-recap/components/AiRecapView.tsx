@@ -1,8 +1,14 @@
+import Divider from "@/components/Divider";
+import TodayRecapDetail from "@/features/ai-recap/components/TodayRecapDetail";
+import TodayRecapSection from "@/features/ai-recap/components/TodayRecapSection";
+
 const AiRecapView = () => {
   return (
-    <div>
-      <h1>AiRecapView</h1>
-    </div>
+    <>
+      <TodayRecapSection />
+      <TodayRecapDetail />
+      <Divider />
+    </>
   );
 };
 
