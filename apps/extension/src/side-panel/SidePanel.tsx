@@ -15,13 +15,13 @@ export function SidePanel() {
   const [activeTab, setActiveTab] = useState<string>(NAVIGATION_TAB.ANALYSIS);
 
   return (
-    <>
-      <PageHeader>
-        {activeTab === NAVIGATION_TAB.SETTINGS && <TopBar />}
-        <NavigationTabs value={activeTab} onValueChange={setActiveTab} />
-      </PageHeader>
-
+    <div className="flex h-full flex-col">
       <AuthGuard>
+        <PageHeader>
+          {activeTab === NAVIGATION_TAB.SETTINGS && <TopBar />}
+          <NavigationTabs value={activeTab} onValueChange={setActiveTab} />
+        </PageHeader>
+
         <PageContent
           className={
             activeTab === NAVIGATION_TAB.SETTINGS ? "pt-[10.5rem] pb-0" : ""
@@ -33,6 +33,6 @@ export function SidePanel() {
         </PageContent>
       </AuthGuard>
       {activeTab !== NAVIGATION_TAB.SETTINGS && <Footer />}
-    </>
+    </div>
   );
 }
