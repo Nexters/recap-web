@@ -2,13 +2,22 @@ import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "@/components/GNBTabs";
 import { GNB_TABS } from "@/const/navigation.const";
 
 type NavigationTabsProps = {
-  value: string;
-  onValueChange: (value: string) => void;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
 };
 
-function NavigationTabs({ value, onValueChange }: NavigationTabsProps) {
+function NavigationTabs({
+  defaultValue,
+  value,
+  onValueChange,
+}: NavigationTabsProps) {
   return (
-    <GnbTabs value={value} onValueChange={onValueChange}>
+    <GnbTabs
+      defaultValue={defaultValue}
+      value={value}
+      onValueChange={onValueChange}
+    >
       <GnbTabsList>
         {GNB_TABS.map(({ label, value }) => (
           <GnbTabsTrigger key={value} value={value}>
