@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import { defineConfig, loadEnv } from "vite";
+import svgr from "vite-plugin-svgr";
 
 import { createManifest } from "./src/manifest.config";
 
@@ -15,7 +16,12 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    plugins: [react(), tailwindcss(), crx({ manifest: createManifest(env) })],
+    plugins: [
+      react(),
+      tailwindcss(),
+      svgr(),
+      crx({ manifest: createManifest(env) }),
+    ],
     base: "",
     resolve: {
       alias: {
