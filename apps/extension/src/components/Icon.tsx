@@ -2,10 +2,11 @@ import * as React from "react";
 import { cn } from "@recap/ui";
 
 import ArrowDownSvg from "@/assets/icons/arrow-down.svg?react";
+import ArrowRightSvg from "@/assets/icons/arrow-right.svg?react";
 import ArrowUpSvg from "@/assets/icons/arrow-up.svg?react";
 import FigmaSvg from "@/assets/icons/figma.svg?react";
 
-export type IconName = "arrow-up" | "arrow-down" | "figma";
+export type IconName = "arrow-up" | "arrow-down" | "figma" | "arrow-right";
 
 const iconRegistry: Record<
   IconName,
@@ -14,6 +15,7 @@ const iconRegistry: Record<
   "arrow-up": ArrowUpSvg,
   "arrow-down": ArrowDownSvg,
   figma: FigmaSvg,
+  "arrow-right": ArrowRightSvg,
 };
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {
