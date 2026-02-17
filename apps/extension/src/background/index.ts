@@ -1,12 +1,13 @@
-import { authAPIService } from "src/services/auth";
-import type { BackendLoginResponse } from "src/services/auth/schema/google-oauth-login.schema";
+import browser from "webextension-polyfill";
+
+import { authAPIService } from "@/services/auth";
+import type { BackendLoginResponse } from "@/services/auth/schema/google-oauth-login.schema";
 import {
   addBrowserSession,
   deleteBrowserSession,
   getBrowserSession,
   visitBrowserSession,
-} from "src/services/browser.service";
-import browser from "webextension-polyfill";
+} from "@/services/browser.service";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 

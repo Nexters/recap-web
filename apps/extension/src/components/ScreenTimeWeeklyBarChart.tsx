@@ -8,7 +8,7 @@ type Props = React.ComponentPropsWithoutRef<typeof WeeklyBarChart> & {
 export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
   return (
     <WeeklyBarChart
-      className={cn(className)}
+      className={className}
       {...props}
       labelClassName={cn("text-gray-500")}
       barWrapClassName={cn(

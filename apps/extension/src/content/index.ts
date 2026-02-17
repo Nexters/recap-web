@@ -1,5 +1,5 @@
-import { getPageSnapshot } from "src/content/get-page-metrics";
-import { type PageVisitedMessage } from "src/types/messages";
+import { getPageSnapshot } from "@/content/get-page-metrics";
+import { type PageVisitedMessage } from "@/types/messages";
 
 function sendPageVisited() {
   const pageData = getPageSnapshot();

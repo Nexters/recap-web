@@ -1,4 +1,4 @@
-import type { PageSnapshot, StorageSession } from "src/types/storage";
+import type { PageSnapshot, StorageSession } from "@/types/storage";
 
 export const MESSAGE_TYPE = {
   PAGE_VISITED: "PAGE_VISITED",
