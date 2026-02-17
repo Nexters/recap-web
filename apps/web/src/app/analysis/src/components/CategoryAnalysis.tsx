@@ -27,7 +27,7 @@ const DEFAULT_APPS: AppIcon[] = [
 const CategoryAnalysis = () => {
   const items = [...Array(6)];
 
-  const rowCount = Math.ceil(items.length / COLS);
+  const isSingle = items.length === 1;
 
   return (
     <div className="flex rounded-[1.25rem] bg-white">
@@ -42,8 +42,7 @@ const CategoryAnalysis = () => {
         </h3>
 
         <BubbleCloudFalling />
-
-        <div className="mt-9 flex items-center gap-1.5">
+        <div className="mt-9 flex flex-wrap items-center gap-x-1.5 gap-y-2">
           <Badge>전체</Badge>
           <Badge variant="secondary">생활 / 편의</Badge>
           <Badge variant="secondary">커뮤니티</Badge>
@@ -53,15 +52,15 @@ const CategoryAnalysis = () => {
 
         <div className="mt-5 grid grid-cols-2 gap-x-8">
           {items.map((_, idx) => {
-            const rowIndex = Math.floor(idx / COLS);
-            const isLastRow = rowIndex === rowCount - 1;
+            const hasItemBelow = idx + COLS < items.length;
 
             return (
               <div
                 key={idx}
                 className={cn(
                   "flex items-center justify-between py-4",
-                  !isLastRow && "border-b border-gray-200",
+                  isSingle && "col-span-2",
+                  hasItemBelow && "border-b border-gray-200",
                 )}
               >
                 <div className="flex items-center gap-2">
@@ -70,7 +69,6 @@ const CategoryAnalysis = () => {
                   </div>
 
                   <p className="text-subtitle-1-sb text-gray-900">생활/편의</p>
-
                   <p className="text-subtitle-2-rg text-gray-800">20분</p>
                 </div>
 
