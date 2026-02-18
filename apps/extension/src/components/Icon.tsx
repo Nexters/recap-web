@@ -4,6 +4,8 @@ import { cn } from "@recap/ui";
 import ArrowDownSvg from "@/assets/icons/arrow-down.svg?react";
 import ArrowRightSvg from "@/assets/icons/arrow-right.svg?react";
 import ArrowUpSvg from "@/assets/icons/arrow-up.svg?react";
+import ClockSvg from "@/assets/icons/clock.svg?react";
+import EmailSvg from "@/assets/icons/email.svg?react";
 import FigmaSvg from "@/assets/icons/figma.svg?react";
 import GoogleSvg from "@/assets/icons/google.svg?react";
 
@@ -12,7 +14,9 @@ export type IconName =
   | "arrow-down"
   | "figma"
   | "arrow-right"
-  | "google";
+  | "google"
+  | "clock"
+  | "email";
 
 const iconRegistry: Record<
   IconName,
@@ -23,6 +27,8 @@ const iconRegistry: Record<
   figma: FigmaSvg,
   "arrow-right": ArrowRightSvg,
   google: GoogleSvg,
+  clock: ClockSvg,
+  email: EmailSvg,
 };
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {

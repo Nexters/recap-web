@@ -1,8 +1,17 @@
+import Divider from "@/components/Divider";
+import ProfileCard from "@/features/setting/components/ProfileCard";
+import RecapIntervalSetting from "@/features/setting/components/RecapIntervalSetting";
+import UntrackedDomainSetting from "@/features/setting/components/UntrackedDomainSetting";
+
 const SettingView = () => {
   return (
-    <div>
-      <h1>SettingView</h1>
-    </div>
+    <>
+      <ProfileCard />
+      <Divider />
+      <RecapIntervalSetting />
+      <Divider />
+      <UntrackedDomainSetting />
+    </>
   );
 };
 
