@@ -4,7 +4,7 @@ import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
 import { MESSAGE_TYPE } from "@/types/messages";
 
 const AuthGuard = ({ children }: PropsWithChildren) => {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   const handleGoogleLogin = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).chrome?.runtime?.sendMessage({
