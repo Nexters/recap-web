@@ -63,6 +63,7 @@ browser.runtime.onMessage.addListener(
           })
           .then((data: unknown) => {
             tokenStore.set(data as BackendLoginResponse);
+            chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
           });
       });
     }
