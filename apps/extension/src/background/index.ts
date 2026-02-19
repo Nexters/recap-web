@@ -1,7 +1,8 @@
 import browser from "webextension-polyfill";
 
-import { authAPIService } from "@/services/auth";
-import type { BackendLoginResponse } from "@/services/auth/schema/google-oauth-login.schema";
+import { authAPIService } from "@/entities/auth/api";
+import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
+import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
   deleteBrowserSession,
@@ -61,8 +62,7 @@ browser.runtime.onMessage.addListener(
             provider: "GOOGLE",
           })
           .then((data: unknown) => {
-            const res = data as BackendLoginResponse;
-            console.log("Background: Backend Google login data >>>>>", res);
+            tokenStore.set(data as BackendLoginResponse);
           });
       });
     }

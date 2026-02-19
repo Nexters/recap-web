@@ -15,8 +15,12 @@ export interface StorageSession extends PageSnapshot {
 
 export interface StorageData {
   sessions: Record<string, StorageSession>;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export const defaultStorage: StorageData = {
   sessions: {},
+  accessToken: null,
+  refreshToken: null,
 };
