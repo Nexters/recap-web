@@ -1,11 +1,9 @@
-// useCustomScrollbar.ts
-"use client";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type UseCustomScrollbarOptions = {
   padding?: number;
-  thumbSize?: number;
+  thumbWidthSize?: number;
+  thumbHeightSize?: number;
 };
 
 const clamp = (n: number, min: number, max: number) => {
@@ -14,7 +12,8 @@ const clamp = (n: number, min: number, max: number) => {
 
 export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
   const padding = options?.padding ?? 4;
-  const thumbSize = options?.thumbSize ?? 16;
+  const thumbWidthSize = options?.thumbWidthSize ?? 16;
+  const thumbHeightSize = options?.thumbHeightSize ?? 16;
 
   const [thumbTop, setThumbTop] = useState(padding);
 
@@ -29,8 +28,8 @@ export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
   });
 
   const thumbStyle: React.CSSProperties = {
-    width: thumbSize,
-    height: thumbSize,
+    width: thumbWidthSize,
+    height: thumbHeightSize,
     transform: `translateX(-50%) translateY(${thumbTop}px)`,
     willChange: "transform",
   };
@@ -42,7 +41,7 @@ export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
 
     const trackH = track.clientHeight;
     const minTop = padding;
-    const maxTop = Math.max(padding, trackH - thumbSize - padding);
+    const maxTop = Math.max(padding, trackH - thumbHeightSize - padding);
 
     const maxScrollTop = Math.max(
       1,
@@ -50,7 +49,7 @@ export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
     );
 
     return { minTop, maxTop, maxScrollTop };
-  }, [padding, thumbSize]);
+  }, [padding, thumbHeightSize]);
 
   const syncThumb = useCallback(() => {
     const scroller = scrollerRef.current;
@@ -135,9 +134,9 @@ export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
       if (!trackRect) return;
 
       const y = e.clientY - trackRect.top;
-      scrollToThumbTop(y - thumbSize / 2, true);
+      scrollToThumbTop(y - thumbHeightSize / 2, true);
     },
-    [scrollToThumbTop, thumbSize],
+    [scrollToThumbTop, thumbHeightSize],
   );
 
   useEffect(() => {
@@ -173,6 +172,7 @@ export const useCustomScrollbar = (options?: UseCustomScrollbarOptions) => {
     onThumbPointerMove,
     onThumbPointerUp,
     onTrackPointerDown,
-    thumbSize,
+    thumbWidthSize,
+    thumbHeightSize,
   };
 };

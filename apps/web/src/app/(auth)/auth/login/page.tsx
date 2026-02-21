@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { tokenStore } from "@/app/(auth)/src/lib/token-store";
 import { authAPIService } from "@/app/(auth)/src/service";
-import { tokenStore } from "@/lib/token-store";
 
 type BackendLoginResponse = {
   accessToken: string;

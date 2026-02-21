@@ -1,11 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image, { type StaticImageData } from "next/image";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
 
+import EmptyDayChartImg from "@/assets/img/empty-day-chart.png";
+import EmptyWeekChartImg from "@/assets/img/empty-week-chart.png";
 import ScreenTimeWeeklyBarChart from "@/components/ScreenTimeWeeklyBarChart";
 
 type ViewMode = "today" | "week";
+
+const EMPTY_ASSET: Record<ViewMode, { src: StaticImageData; alt: string }> = {
+  week: {
+    src: EmptyWeekChartImg,
+    alt: "이번 주간에는 아직 누적된 활동이 보이지 않아요",
+  },
+  today: {
+    src: EmptyDayChartImg,
+    alt: "이 날에는 누적된 활동이 없어요",
+  },
+};
 
 const ScreenTime = () => {
   const [mode, setMode] = useState<ViewMode>("week");
@@ -58,15 +72,17 @@ const ScreenTime = () => {
 
   const chartData = mode === "today" ? todayData : weekData;
 
+  const isEmpty = false;
+
   return (
     <div className="flex rounded-[1.25rem] bg-white">
-      <div className="p-10">
+      <div className="min-w-71.5 p-10">
         <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-          이번주 평균 스크린타임
+          {mode === "week" ? "이번주 평균 스크린타임" : "총 스크린타임"}
         </h2>
 
         <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
-          하루 109시간 2분
+          {isEmpty ? "-" : "하루 109시간 2분"}
         </h3>
       </div>
 
@@ -88,13 +104,31 @@ const ScreenTime = () => {
           </Badge>
         </div>
 
-        <div className="mt-12">
+        <div className="relative mt-12">
           <ScreenTimeWeeklyBarChart
             data={chartData}
             height={140}
             minBarHeight={10}
-            striped
+            striped={!isEmpty}
+            isEmpty={isEmpty}
           />
+
+          {isEmpty && (
+            <div
+              className="absolute inset-x-0 top-0 z-10"
+              style={{ height: 122 }}
+            >
+              <div className="absolute inset-0 bg-white" />
+              <Image
+                src={EMPTY_ASSET[mode].src}
+                alt={EMPTY_ASSET[mode].alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 900px"
+                className="object-contain"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
