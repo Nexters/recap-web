@@ -4,19 +4,24 @@ export interface PageSnapshot {
   scrollDepth?: number;
   metadata: {
     description?: string | null;
-    thumbnailUrl?: string | null;
+    faviconUrl?: string | null;
   };
 }
 
 export interface StorageSession extends PageSnapshot {
-  visitedAt: string;
-  closedAt?: string | null;
+  visitedAt: number;
+  closedAt?: number | null;
+  tabId?: number;
 }
 
 export interface StorageData {
   sessions: Record<string, StorageSession>;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export const defaultStorage: StorageData = {
   sessions: {},
+  accessToken: null,
+  refreshToken: null,
 };
