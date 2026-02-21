@@ -5,8 +5,8 @@ import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
 import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
+  closeBrowserSession,
   deleteBrowserSession,
-  getBrowserSession,
   visitBrowserSession,
 } from "@/services/browser.service";
 
@@ -23,14 +23,14 @@ browser.action.onClicked.addListener(async (tab) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  //console.log("Background: Tab removed >>>>>", tabId);
+  console.log("Background: Tab removed >>>>>", tabId);
   deleteBrowserSession(String(tabId));
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  //console.log("Background: Tab activated >>>>>", tabId);
-  //const closedSession = await closeBrowserSession();
-  //console.log("Closed session api payload >>>>>", closedSession);
+  console.log("Background: Tab activated >>>>>", tabId);
+  const closedSession = await closeBrowserSession();
+  console.log("Closed session api payload >>>>>", closedSession);
   await visitBrowserSession(String(tabId));
 });
 
@@ -43,15 +43,6 @@ browser.runtime.onMessage.addListener(
 
     if (msg.type === MESSAGE_TYPE.PAGE_VISITED) {
       return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
-    }
-
-    if (msg.type === MESSAGE_TYPE.GET_PAGE_VISITED) {
-      return getBrowserSession().then((sessions) => {
-        return {
-          type: MESSAGE_TYPE.GET_PAGE_VISITED,
-          data: sessions,
-        };
-      });
     }
 
     if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
