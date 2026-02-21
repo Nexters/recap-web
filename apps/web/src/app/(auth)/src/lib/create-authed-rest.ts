@@ -11,7 +11,7 @@ async function refreshTokens(baseURL: string): Promise<RefreshResponse> {
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) throw new Error("No refresh token");
 
-  const res = await fetch(`${baseURL}/auth/refresh`, {
+  const res = await fetch(`${baseURL}/api/v1/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({ refreshToken }),
