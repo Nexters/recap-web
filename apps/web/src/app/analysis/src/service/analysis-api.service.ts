@@ -1,13 +1,15 @@
 import type { RestAPIProtocol } from "@recap/api";
 
+import type { DateQueryType } from "@/app/analysis/src/service/schema/enum.schema";
+import {
+  type GetWebsiteAnalysesQueryType,
+  GetWebsiteAnalysesResponseSchema,
+} from "@/app/analysis/src/service/schema/get-frequently-visited-websites.schema";
 import {
   type GetScreenTimeQueryType,
   GetScreenTimeResponseSchema,
 } from "@/app/analysis/src/service/schema/get-screen-time.schema";
-import {
-  type GetWorkPatternQueryType,
-  GetWorkPatternResponseSchema,
-} from "@/app/analysis/src/service/schema/get-work-pattern.schema";
+import { GetWorkPatternResponseSchema } from "@/app/analysis/src/service/schema/get-work-pattern.schema";
 
 export class AnalysisAPIService {
   constructor(private fetch: RestAPIProtocol) {}
@@ -22,13 +24,23 @@ export class AnalysisAPIService {
     });
   }
 
-  getWorkPattern(query?: GetWorkPatternQueryType) {
+  getWorkPattern(query?: DateQueryType) {
     return this.fetch.get({
       url: "users/me/work-pattern",
       query: {
         ...query,
       },
       validate: GetWorkPatternResponseSchema.parse,
+    });
+  }
+
+  getFrequentlyVisitedWebSite(query?: GetWebsiteAnalysesQueryType) {
+    return this.fetch.get({
+      url: "users/me/frequently-visited-websites",
+      query: {
+        ...query,
+      },
+      validate: GetWebsiteAnalysesResponseSchema.parse,
     });
   }
 }

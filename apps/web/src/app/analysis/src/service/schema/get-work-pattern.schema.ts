@@ -25,9 +25,3 @@ const GetWorkPatternSchema = z.object({
 
 export const GetWorkPatternResponseSchema =
   CreateResponseSchema(GetWorkPatternSchema);
-
-export const GetWorkPatternQuerySchema = z.object({
-  date: z.string(),
-});
-
-export type GetWorkPatternQueryType = z.infer<typeof GetWorkPatternQuerySchema>;
