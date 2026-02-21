@@ -11,4 +11,10 @@ export class AuthAPIService {
       data,
     });
   }
+
+  logout() {
+    return this.fetch.post({
+      url: "auth/logout",
+    });
+  }
 }

@@ -69,3 +69,17 @@ const generateZodError = (error: z.ZodError) => {
 
   return message;
 };
+
+export const catchAPIError = (error: Error | unknown) => {
+  console.log(error);
+
+  if (error instanceof APIError) {
+    return console.error(error.message);
+  }
+
+  if (error instanceof Error) {
+    return console.error(error.message);
+  }
+
+  console.error("지금 요청을 처리할 수 없습니다. 잠시 후 다시 시도하세요.");
+};
