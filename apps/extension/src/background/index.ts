@@ -7,6 +7,7 @@ import {
   addBrowserSession,
   closeBrowserSession,
   deleteBrowserSession,
+  getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
 
@@ -23,15 +24,28 @@ browser.action.onClicked.addListener(async (tab) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  console.log("Background: Tab removed >>>>>", tabId);
-  deleteBrowserSession(String(tabId));
+  getBrowserSessionById(String(tabId)).then((session) => {
+    console.log("Background: Tab removed >>>>>", {
+      ...session,
+      tabId,
+      isClosed: true,
+    });
+    deleteBrowserSession(String(tabId));
+  });
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  console.log("Background: Tab activated >>>>>", tabId);
   const closedSession = await closeBrowserSession();
-  console.log("Closed session api payload >>>>>", closedSession);
-  await visitBrowserSession(String(tabId));
+  if (Object.keys(closedSession).length > 0) {
+    console.log(
+      "Background: Tab activated : Closed session api payload >>>>>",
+      {
+        ...closedSession,
+        tabId,
+      },
+    );
+    await visitBrowserSession(String(tabId));
+  }
 });
 
 browser.runtime.onMessage.addListener(
