@@ -4,7 +4,7 @@ export interface PageSnapshot {
   scrollDepth?: number;
   metadata: {
     description?: string | null;
-    thumbnailUrl?: string | null;
+    faviconUrl?: string | null;
   };
 }
 

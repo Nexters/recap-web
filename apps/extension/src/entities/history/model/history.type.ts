@@ -9,5 +9,5 @@ export type CreateHistoryDTO = {
     faviconUrl: string;
   };
   isClosed: boolean;
-  scrollDepth: number;
+  scrollDepth?: number;
 };
