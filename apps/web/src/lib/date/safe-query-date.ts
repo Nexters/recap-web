@@ -12,7 +12,6 @@ export const isValidYYYYMMDD = (v: string) => {
   if (Number.isNaN(parsed.getTime())) return false;
 
   const [y, m, d] = v.split("-").map(Number);
-
   return (
     parsed.getFullYear() === y &&
     parsed.getMonth() + 1 === m &&
@@ -25,9 +24,7 @@ export const getSafeQueryDate = (
   fallbackDate: Date = new Date(),
 ) => {
   const fallback = formatLocalYYYYMMDD(fallbackDate);
-
   if (!queryValue) return fallback;
   if (!isValidYYYYMMDD(queryValue)) return fallback;
-
   return queryValue;
 };

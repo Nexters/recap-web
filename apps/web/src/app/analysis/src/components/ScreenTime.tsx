@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
-import { useSearchParams } from "next/navigation";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,7 +13,6 @@ import type {
 import EmptyDayChartImg from "@/assets/img/empty-day-chart.png";
 import EmptyWeekChartImg from "@/assets/img/empty-week-chart.png";
 import ScreenTimeWeeklyBarChart from "@/components/ScreenTimeWeeklyBarChart";
-import { getSafeQueryDate } from "@/lib/date/safe-query-date";
 
 const EMPTY_ASSET: Record<
   ScreenTimePeriodType,
@@ -30,14 +28,7 @@ const EMPTY_ASSET: Record<
   },
 };
 
-const ScreenTime = () => {
-  const searchParams = useSearchParams();
-
-  const date = useMemo(
-    () => getSafeQueryDate(searchParams.get("date")),
-    [searchParams],
-  );
-
+const ScreenTime = ({ date }: { date: string }) => {
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
 
   const { data } = useQuery({

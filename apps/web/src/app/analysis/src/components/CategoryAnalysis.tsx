@@ -24,7 +24,8 @@ const DEFAULT_APPS: AppIcon[] = [
   { key: "steam", label: "S", bgClassName: "bg-slate-900" },
 ];
 
-const CategoryAnalysis = () => {
+const CategoryAnalysis = ({ date }: { date: string }) => {
+  console.log(date);
   const items = [...Array(6)];
 
   const isSingle = items.length === 1;

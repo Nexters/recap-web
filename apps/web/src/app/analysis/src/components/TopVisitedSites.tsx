@@ -1,4 +1,6 @@
-const TopVisitedSites = () => {
+const TopVisitedSites = ({ date }: { date: string }) => {
+  console.log(date);
+
   return (
     <div className="rounded-[1.25rem] bg-white p-10">
       <h2 className="text-heading-rg whitespace-nowrap text-gray-800">

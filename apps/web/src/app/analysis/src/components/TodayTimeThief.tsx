@@ -1,6 +1,8 @@
 import FigmaIcon from "@/assets/icons/figma.svg";
 
-const TodayTimeThief = () => {
+const TodayTimeThief = ({ date }: { date: string }) => {
+  console.log(date);
+
   return (
     <div className="rounded-[1.25rem] bg-white p-10">
       <div className="flex items-center justify-between">
