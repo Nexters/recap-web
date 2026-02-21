@@ -12,6 +12,7 @@ import {
   getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
+import { calculateTimeDiff } from "@/utils/date";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
@@ -28,7 +29,9 @@ browser.action.onClicked.addListener(async (tab) => {
 browser.tabs.onRemoved.addListener(async (tabId) => {
   removedTabIds.add(tabId);
   getBrowserSessionById(String(tabId)).then((session) => {
-    // TODO: start, end time 10 초 이상일 경우만 조건 추가
+    if (calculateTimeDiff(session.visitedAt, session.closedAt) <= 10) {
+      return;
+    }
     historyAPIService.createHistory({
       ...session,
       closedAt: session?.closedAt ?? new Date().getTime() / 1000,
@@ -47,7 +50,11 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
 
   if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
-    // TODO: start, end time 10 초 이상일 경우만 조건 추가
+    if (
+      calculateTimeDiff(closedSession.visitedAt, closedSession.closedAt) <= 10
+    ) {
+      return;
+    }
     historyAPIService.createHistory({
       ...closedSession,
       isClosed: false,
