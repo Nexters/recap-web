@@ -2,13 +2,22 @@
 
 import { useMemo, useState } from "react";
 import { cn, Switch, SwitchThumb } from "@recap/ui";
+import { useQuery } from "@tanstack/react-query";
 
 import { SimpleSelect } from "@/app/settings/src/components/SimpleSelect";
+import { userAPIService } from "@/app/settings/src/service";
 import RightIcon from "@/assets/icons/arrow-right.svg";
 import MailIcon from "@/assets/icons/mail.svg";
 import TimeBlueIcon from "@/assets/icons/time-blue.svg";
 
 export default function SettingPage() {
+  const { data } = useQuery({
+    queryKey: ["getUserProfile"],
+    queryFn: () => userAPIService.getUserProfile(),
+  });
+
+  console.log(data);
+
   const [hour, setHour] = useState("09");
   const [minute, setMinute] = useState("00");
 
