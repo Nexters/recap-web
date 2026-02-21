@@ -12,7 +12,7 @@ async function getBrowserSession() {
 
 async function getBrowserSessionById(tabId: string) {
   const sessions = await getBrowserSession();
-  return sessions[tabId];
+  return { tabId: Number(tabId), ...sessions[tabId] };
 }
 
 async function setBrowserSession(sessions: Record<string, StorageSession>) {
@@ -37,7 +37,7 @@ async function addBrowserSession(tabId: string, data: PageSnapshot) {
 
   sessions[tabId] = {
     ...data,
-    visitedAt: new Date().toISOString(),
+    visitedAt: new Date().getTime() / 1000,
     closedAt: null,
   };
 
@@ -45,13 +45,19 @@ async function addBrowserSession(tabId: string, data: PageSnapshot) {
 }
 
 async function closeBrowserSession() {
-  let result = {};
+  let result: StorageSession | null = null;
   const sessions = await getBrowserSession();
 
-  for (const session of Object.values(sessions)) {
+  for (const [tabId, session] of Object.entries(sessions)) {
     if (session.closedAt === null) {
-      session.closedAt = new Date().toISOString();
-      result = session;
+      const closedAt = new Date().getTime() / 1000;
+      session.closedAt = closedAt;
+      result = {
+        ...session,
+        tabId: Number(tabId),
+        closedAt,
+      };
+      break;
     }
   }
   await setBrowserSession(sessions);
@@ -62,7 +68,7 @@ async function visitBrowserSession(tabId: string) {
   const sessions = await getBrowserSession();
 
   if (!sessions[tabId]) return;
-  sessions[tabId].visitedAt = new Date().toISOString();
+  sessions[tabId].visitedAt = new Date().getTime() / 1000;
   sessions[tabId].closedAt = null;
   await setBrowserSession(sessions);
 }

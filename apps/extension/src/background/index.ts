@@ -1,17 +1,22 @@
 import browser from "webextension-polyfill";
 
-import { authAPIService } from "@/services/auth";
-import type { BackendLoginResponse } from "@/services/auth/schema/google-oauth-login.schema";
+import { authAPIService } from "@/entities/auth/api";
+import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
+import { historyAPIService } from "@/entities/history/api";
+import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
+import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
+  closeBrowserSession,
   deleteBrowserSession,
-  getBrowserSession,
+  getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
+import { calculateTimeDiff } from "@/utils/date";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
-console.log("Background script loaded");
+const removedTabIds = new Set<number>();
 
 browser.action.onClicked.addListener(async (tab) => {
   if (tab.id) {
@@ -22,14 +27,40 @@ browser.action.onClicked.addListener(async (tab) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  //console.log("Background: Tab removed >>>>>", tabId);
-  deleteBrowserSession(String(tabId));
+  removedTabIds.add(tabId);
+  getBrowserSessionById(String(tabId)).then((session) => {
+    if (calculateTimeDiff(session.visitedAt, session.closedAt) <= 10) {
+      return;
+    }
+    historyAPIService.createHistory({
+      ...session,
+      closedAt: session?.closedAt ?? new Date().getTime() / 1000,
+      isClosed: true,
+    } as CreateHistoryDTO);
+    deleteBrowserSession(String(tabId));
+
+    // Clean up after a short delay to avoid memory leaks
+    setTimeout(() => {
+      removedTabIds.delete(tabId);
+    }, 1000);
+  });
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  //console.log("Background: Tab activated >>>>>", tabId);
-  //const closedSession = await closeBrowserSession();
-  //console.log("Closed session api payload >>>>>", closedSession);
+  const closedSession = await closeBrowserSession();
+
+  if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
+    if (
+      calculateTimeDiff(closedSession.visitedAt, closedSession.closedAt) <= 10
+    ) {
+      return;
+    }
+    historyAPIService.createHistory({
+      ...closedSession,
+      isClosed: false,
+    } as CreateHistoryDTO);
+  }
+
   await visitBrowserSession(String(tabId));
 });
 
@@ -44,15 +75,6 @@ browser.runtime.onMessage.addListener(
       return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
     }
 
-    if (msg.type === MESSAGE_TYPE.GET_PAGE_VISITED) {
-      return getBrowserSession().then((sessions) => {
-        return {
-          type: MESSAGE_TYPE.GET_PAGE_VISITED,
-          data: sessions,
-        };
-      });
-    }
-
     if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
       chrome.identity.getAuthToken({ interactive: true }, (token) => {
         authAPIService
@@ -61,8 +83,8 @@ browser.runtime.onMessage.addListener(
             provider: "GOOGLE",
           })
           .then((data: unknown) => {
-            const res = data as BackendLoginResponse;
-            console.log("Background: Backend Google login data >>>>>", res);
+            tokenStore.set(data as BackendLoginResponse);
+            chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
           });
       });
     }

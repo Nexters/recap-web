@@ -19,7 +19,7 @@ function getPageSnapshot(): PageSnapshot {
     title: document.title,
     metadata: {
       description,
-      thumbnailUrl: faviconHref,
+      faviconUrl: faviconHref,
     },
   };
 }

@@ -1,10 +1,27 @@
 import type { PropsWithChildren } from "react";
+import { useEffect, useState } from "react";
 
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
+import useBrowserMessage from "@/hooks/use-browser-message";
+import { tokenStore } from "@/lib/token-store";
 import { MESSAGE_TYPE } from "@/types/messages";
 
 const AuthGuard = ({ children }: PropsWithChildren) => {
-  const isLoggedIn = true;
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  const checkAuth = async () => {
+    const accessToken = await tokenStore.getAccess();
+    setIsLoggedIn(accessToken !== null);
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
+    checkAuth();
+  });
+
   const handleGoogleLogin = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).chrome?.runtime?.sendMessage({
