@@ -1,6 +1,7 @@
 "use client";
 
 import { useCustomScrollbar } from "@/app/ai-recap/src/hooks/useCustomScrollbar";
+import TimeLineBackgroundImg from "@/assets/img/timeline-bg.png";
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
@@ -13,10 +14,22 @@ const Timeline = () => {
     onThumbPointerMove,
     onThumbPointerUp,
     onTrackPointerDown,
-  } = useCustomScrollbar({ padding: 4, thumbSize: 16 });
+  } = useCustomScrollbar({
+    padding: 4,
+    thumbWidthSize: 13,
+    thumbHeightSize: 90,
+  });
+
+  const bgStyle: React.CSSProperties = {
+    backgroundImage: `url(${TimeLineBackgroundImg.src})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed", // 핵심: 배경 정렬을 viewport 기준으로 통일
+  };
 
   return (
-    <div className="flex gap-9 rounded-[1.25rem] bg-white px-9 py-8">
+    <div className="relative flex gap-9 rounded-[1.25rem] bg-white px-9 py-8">
       <div className="max-w-57 space-y-2">
         <p className="text-heading-rg text-gray-800">AI 타임라인</p>
         <h2 className="text-title-1 text-gray-900">
@@ -24,52 +37,54 @@ const Timeline = () => {
         </h2>
       </div>
 
-      <div className="bg-gray-75 relative w-full overflow-hidden rounded-[1.25rem] px-6">
+      <div
+        ref={trackRef}
+        className="absolute top-8 right-6 z-0 h-[calc(100%-4rem)] w-3 rounded-full bg-gray-200"
+        onPointerDown={onTrackPointerDown}
+      >
         <div
-          ref={trackRef}
-          className="absolute top-6 right-6 h-[calc(100%-48px)] w-6 rounded-full bg-gray-300"
-          onPointerDown={onTrackPointerDown}
-        >
-          <div
-            className="absolute left-1/2 rounded-full bg-white shadow-sm"
-            style={thumbStyle}
-            onPointerDown={onThumbPointerDown}
-            onPointerMove={onThumbPointerMove}
-            onPointerUp={onThumbPointerUp}
-            onPointerCancel={onThumbPointerUp}
-          />
-        </div>
+          className="absolute left-1/2 rounded-full bg-white shadow-sm"
+          style={thumbStyle}
+          onPointerDown={onThumbPointerDown}
+          onPointerMove={onThumbPointerMove}
+          onPointerUp={onThumbPointerUp}
+          onPointerCancel={onThumbPointerUp}
+        />
+      </div>
 
-        <div className="pointer-events-none absolute top-0 bottom-0 left-14.5 w-0.5 bg-gray-200" />
+      <div
+        className="relative z-10 mr-4 w-full overflow-hidden rounded-[1.25rem] px-6"
+        style={bgStyle}
+      >
+        <div className="pointer-events-none absolute top-0 bottom-0 left-11 w-0.5 bg-white" />
 
         <div
           ref={scrollerRef}
-          className="h-96 overflow-y-auto overscroll-contain py-6 pr-12"
+          className="h-96 overflow-y-auto overscroll-contain py-6"
           style={{ scrollbarWidth: "none" }}
         >
-          <div className="relative space-y-2">
+          <div className="relative ml-3.25 space-y-4">
             {HOURS.map((h) => {
               return (
                 <div className="flex items-center gap-1.5" key={h}>
-                  <div className="text-heading-md flex h-8 w-6 shrink-0 items-center justify-center text-gray-900">
-                    {h}
-                  </div>
-
                   <div className="relative flex items-center">
-                    <div className="bg-blue-75 size-2.5 rounded-full" />
-                    <div className="bg-blue-75 absolute left-2 h-0.5 w-4" />
+                    <div
+                      className="size-4 rounded-full border border-white"
+                      style={bgStyle}
+                    />
                   </div>
 
-                  <div className="bg-blue-75 ml-2 flex w-full items-center justify-between rounded-xl px-3 py-1">
-                    <div className="flex items-center gap-2">
-                      <p className="text-body-3 text-blue-400">00:23 - 00:53</p>
-                      <p className="text-subtitle-2-sb text-gray-800">
-                        신발 쇼핑하기
-                      </p>
-                    </div>
+                  <div className="bg-gray-75 ml-2 flex w-full items-center justify-between rounded-xl p-4">
+                    <p className="text-headline-md text-gray-900">
+                      신발 쇼핑하기
+                    </p>
 
-                    <div className="text-label-2 rounded-lg bg-gray-800 px-6 py-1 text-white">
-                      30M
+                    <div className="flex items-center gap-2">
+                      <p className="text-body-1 text-gray-500">30m</p>
+
+                      <div className="size-1 rounded-full bg-gray-200" />
+
+                      <p className="text-body-1 text-gray-500">00:00 - 00:30</p>
                     </div>
                   </div>
                 </div>
