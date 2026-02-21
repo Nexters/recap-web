@@ -9,8 +9,9 @@ export interface PageSnapshot {
 }
 
 export interface StorageSession extends PageSnapshot {
-  visitedAt: string;
-  closedAt?: string | null;
+  visitedAt: number;
+  closedAt?: number | null;
+  tabId?: number;
 }
 
 export interface StorageData {

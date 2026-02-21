@@ -2,6 +2,8 @@ import browser from "webextension-polyfill";
 
 import { authAPIService } from "@/entities/auth/api";
 import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
+import { historyAPIService } from "@/entities/history/api";
+import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
 import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
@@ -13,7 +15,7 @@ import {
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
-console.log("Background script loaded");
+const removedTabIds = new Set<number>();
 
 browser.action.onClicked.addListener(async (tab) => {
   if (tab.id) {
@@ -24,28 +26,35 @@ browser.action.onClicked.addListener(async (tab) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
+  removedTabIds.add(tabId);
   getBrowserSessionById(String(tabId)).then((session) => {
-    console.log("Background: Tab removed >>>>>", {
+    // TODO: start, end time 10 초 이상일 경우만 조건 추가
+    historyAPIService.createHistory({
       ...session,
-      tabId,
+      closedAt: session?.closedAt ?? new Date().getTime() / 1000,
       isClosed: true,
-    });
+    } as CreateHistoryDTO);
     deleteBrowserSession(String(tabId));
+
+    // Clean up after a short delay to avoid memory leaks
+    setTimeout(() => {
+      removedTabIds.delete(tabId);
+    }, 1000);
   });
 });
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
-  if (Object.keys(closedSession).length > 0) {
-    console.log(
-      "Background: Tab activated : Closed session api payload >>>>>",
-      {
-        ...closedSession,
-        tabId,
-      },
-    );
-    await visitBrowserSession(String(tabId));
+
+  if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
+    // TODO: start, end time 10 초 이상일 경우만 조건 추가
+    historyAPIService.createHistory({
+      ...closedSession,
+      isClosed: false,
+    } as CreateHistoryDTO);
   }
+
+  await visitBrowserSession(String(tabId));
 });
 
 browser.runtime.onMessage.addListener(
