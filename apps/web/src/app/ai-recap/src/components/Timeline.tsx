@@ -66,7 +66,7 @@ const Timeline = () => {
           <div className="relative ml-3.25 space-y-4">
             {HOURS.map((h) => {
               return (
-                <div className="flex items-center gap-1.5" key={h}>
+                <div className="flex items-center gap-9" key={h}>
                   <div className="relative flex items-center">
                     <div
                       className="size-4 rounded-full border border-white"
@@ -74,7 +74,7 @@ const Timeline = () => {
                     />
                   </div>
 
-                  <div className="bg-gray-75 ml-2 flex w-full items-center justify-between rounded-xl p-4">
+                  <div className="bg-gray-75 flex w-full items-center justify-between rounded-xl p-4">
                     <p className="text-headline-md text-gray-900">
                       신발 쇼핑하기
                     </p>
