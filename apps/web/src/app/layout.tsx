@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
@@ -48,7 +49,9 @@ export default function RootLayout({
       <body className="mx-auto max-w-7xl bg-gray-100">
         <ReactQueryProviders>
           <div className="mx-17.5 mt-20 mb-35 flex flex-col gap-7">
-            <GNB />
+            <Suspense>
+              <GNB />
+            </Suspense>
             {children}
           </div>
         </ReactQueryProviders>

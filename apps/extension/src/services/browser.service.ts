@@ -2,8 +2,8 @@ import {
   defaultStorage,
   type PageSnapshot,
   type StorageSession,
-} from "src/types/storage";
-import { getStorage, setStorage } from "src/utils/storage";
+} from "@/types/storage";
+import { getStorage, setStorage } from "@/utils/storage";
 
 async function getBrowserSession() {
   const storage = await getStorage(["sessions"]);
