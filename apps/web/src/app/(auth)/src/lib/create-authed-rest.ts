@@ -8,7 +8,7 @@ type RefreshResponse = { accessToken: string; refreshToken: string };
 let refreshPromise: Promise<RefreshResponse> | null = null;
 
 async function refreshTokens(baseURL: string): Promise<RefreshResponse> {
-  const refreshToken = await tokenStore.getRefresh();
+  const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) throw new Error("No refresh token");
 
   const res = await fetch(`${baseURL}/api/v1/auth/refresh`, {
@@ -34,8 +34,7 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
     headers: { Accept: "application/json" },
 
     onRequest: async ({ url, init }) => {
-      const accessToken = await tokenStore.getAccess();
-
+      const accessToken = tokenStore.getAccess();
       if (!accessToken) return { url, init };
 
       const headers = new Headers(init.headers);
@@ -52,7 +51,7 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
         refreshPromise = (async () => {
           try {
             const tokens = await refreshTokens(baseURL);
-            await tokenStore.set(tokens);
+            tokenStore.set(tokens);
             return tokens;
           } finally {
             refreshPromise = null;
@@ -63,7 +62,7 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
       try {
         await refreshPromise;
 
-        const newAccess = await tokenStore.getAccess();
+        const newAccess = tokenStore.getAccess();
         if (!newAccess) return res;
 
         const retryHeaders = new Headers(init.headers);
@@ -71,7 +70,7 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
 
         return fetch(url, { ...init, headers: retryHeaders });
       } catch {
-        await tokenStore.clear();
+        tokenStore.clear();
         return res;
       }
     },

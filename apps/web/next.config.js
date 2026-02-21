@@ -35,6 +35,23 @@ const nextConfig = {
 
     return config;
   },
+
+  images: {
+    domains: ["lh3.googleusercontent.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+    ],
+    deviceSizes: [320, 640, 750, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128],
+    minimumCacheTTL: 60,
+  },
 };
 
 export default nextConfig;

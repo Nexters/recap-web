@@ -1,26 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { cn, Switch, SwitchThumb } from "@recap/ui";
-import { useQuery } from "@tanstack/react-query";
 
 import { SimpleSelect } from "@/app/settings/src/components/SimpleSelect";
-import { userAPIService } from "@/app/settings/src/service";
-import RightIcon from "@/assets/icons/arrow-right.svg";
-import MailIcon from "@/assets/icons/mail.svg";
+import UserProfile from "@/app/settings/src/components/UserProfile";
 import TimeBlueIcon from "@/assets/icons/time-blue.svg";
 
 export default function SettingPage() {
-  const { data } = useQuery({
-    queryKey: ["getUserProfile"],
-    queryFn: () => userAPIService.getUserProfile(),
-  });
-
-  console.log(data);
-
   const [hour, setHour] = useState("09");
   const [minute, setMinute] = useState("00");
-
   const [domain, setDomain] = useState("");
 
   const hourOptions = useMemo(
@@ -43,31 +32,9 @@ export default function SettingPage() {
 
   return (
     <>
-      <div className="rounded-[1.25rem] bg-white px-9 py-8">
-        <h2 className="text-heading-rg text-gray-800">내 계정</h2>
-
-        <div className="my-6 h-px w-full bg-gray-200" />
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="size-16 rounded-full bg-gray-200" />
-
-            <div className="space-y-1">
-              <p className="text-headline-sb text-gray-800">계정 이름</p>
-
-              <div className="flex items-center gap-1">
-                <MailIcon />
-                <p className="text-body-1 text-gray-800">sample@gmail.com</p>
-              </div>
-            </div>
-          </div>
-
-          <button className="flex items-center gap-1 rounded-xl border border-solid border-gray-300 bg-white px-6 py-4">
-            로그아웃
-            <RightIcon />
-          </button>
-        </div>
-      </div>
+      <Suspense fallback={<div>로딩중..</div>}>
+        <UserProfile />
+      </Suspense>
 
       <div className="rounded-[1.25rem] bg-white px-9 py-8">
         <div className="flex items-center justify-between">
