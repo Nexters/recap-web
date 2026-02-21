@@ -5,6 +5,7 @@ import {
   type GetWebsiteAnalysesQueryType,
   GetWebsiteAnalysesResponseSchema,
 } from "@/app/analysis/src/service/schema/get-frequently-visited-websites.schema";
+import { TopVisitedSiteResponseSchema } from "@/app/analysis/src/service/schema/get-longest-stayed-website.schema";
 import {
   type GetScreenTimeQueryType,
   GetScreenTimeResponseSchema,
@@ -41,6 +42,16 @@ export class AnalysisAPIService {
         ...query,
       },
       validate: GetWebsiteAnalysesResponseSchema.parse,
+    });
+  }
+
+  getLongestStayedWebsite(query?: DateQueryType) {
+    return this.fetch.get({
+      url: "users/me/longest-stayed-website",
+      query: {
+        ...query,
+      },
+      validate: TopVisitedSiteResponseSchema.parse,
     });
   }
 }
