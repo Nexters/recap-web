@@ -1,29 +1,36 @@
-import { useEffect } from "react";
-import type { LanguageSchemaType } from "@recap/api";
-import { DEFAULT_LANGUAGE, type LanguageType } from "@recap/i18n";
-import { Language } from "@recap/lib";
+import { useCallback } from "react";
+import type { PatchUserProfileDTO } from "@recap/api";
+import type { LanguageType } from "@recap/i18n";
+import type { UseMutationOptions } from "@recap/react-query";
 
 import { useLanguageStore } from "@/entities/language";
-import { useGetUserProfile } from "@/features/setting/api/user-query";
+import { usePatchUserProfile } from "@/features/setting/api/user-query";
+import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
 
-const LANGUAGE_MAP: Record<LanguageSchemaType, LanguageType> = {
-  [Language.KOREAN]: "ko",
-  [Language.ENGLISH]: "en",
-};
+type PatchLanguageOptions = Omit<
+  UseMutationOptions<void, Error, PatchUserProfileDTO>,
+  "mutationFn"
+>;
+
 const useLanguage = () => {
   const language = useLanguageStore((s) => s.localize);
   const setLanguage = useLanguageStore((s) => s.setLanguage);
-  const { data } = useGetUserProfile({
-    select: (data) => data?.data?.language,
-  });
 
-  useEffect(() => {
-    if (data) {
-      setLanguage(LANGUAGE_MAP?.[data] ?? DEFAULT_LANGUAGE);
-    }
-  }, [data]);
+  const { mutate } = usePatchUserProfile();
 
-  return { language, setLanguage };
+  const patchLanguage = useCallback(
+    (nextLanguage?: LanguageType, options?: PatchLanguageOptions) => {
+      const target = nextLanguage ?? useLanguageStore.getState().localize;
+      mutate(LANGUAGE_TO_PROFILE[target], options);
+    },
+    [],
+  );
+
+  return {
+    language,
+    setLanguage,
+    patchLanguage,
+  };
 };
 
 export default useLanguage;
