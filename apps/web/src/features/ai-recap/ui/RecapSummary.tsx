@@ -51,7 +51,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
           direction="column"
           className="items-stretch gap-6 md:flex-row md:items-end md:justify-between"
         >
-          <Stack gap="none" className="gap-2">
+          <Stack gap="none" className="min-w-0 flex-1 gap-2">
             <p className="text-heading-md text-blue-400">
               {t("screenTime.todayRecapTitle")}
             </p>
@@ -60,8 +60,8 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
             </CardTitle>
           </Stack>
 
-          <Flex align="flex-end" className="gap-4">
-            <Stack gap="none" className="w-42 gap-1">
+          <Flex align="flex-end" className="shrink-0 flex-nowrap gap-4">
+            <Stack gap="none" className="w-fit min-w-38 shrink-0 gap-1">
               <CardDescription className="text-subtitle-2-rg text-gray-500">
                 {t("todayRecap.totalScreenTimeLabel")}
               </CardDescription>
@@ -72,7 +72,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
 
             <Divider orientation="vertical" className="h-18" />
 
-            <Stack gap="none" className="w-42 gap-1">
+            <Stack gap="none" className="w-fit min-w-38 shrink-0 gap-1">
               <CardDescription className="text-subtitle-2-rg text-gray-500">
                 {t("todayRecap.measurementTimeLabel")}
               </CardDescription>
