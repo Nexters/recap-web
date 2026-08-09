@@ -20,8 +20,8 @@ const WorkPatternRow = ({ index, ratio }: { index: number; ratio: number }) => {
 
   return (
     <Item className="flex-nowrap items-center gap-5 rounded-none border-0 bg-transparent p-0 shadow-none">
-      <ItemMedia variant="icon" className="size-7 [&_svg]:size-7">
-        <PatternIcon />
+      <ItemMedia variant="icon" className="size-7">
+        <PatternIcon className="size-7" />
       </ItemMedia>
 
       <ItemContent className="min-w-0 flex-1 flex-row">
