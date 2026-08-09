@@ -23,8 +23,8 @@ const WORK_PATTERN_LABEL = {
 
 const WorkPattern = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
-  const { total, list, topPattern } = useWorkPatternList(date);
-  const isEmpty = total <= 1;
+  const { list, topPattern } = useWorkPatternList(date);
+  const hasTopPattern = topPattern.percentage > 0;
 
   return (
     <Card className="gap-0 rounded-[1.25rem] bg-white p-5 shadow-none md:p-6 xl:p-10">
@@ -34,18 +34,16 @@ const WorkPattern = ({ date }: { date: string }) => {
         </CardTitle>
 
         <CardDescription className="text-title-1 m-0 mt-2 whitespace-nowrap text-gray-900">
-          {isEmpty && topPattern?.pattern
-            ? "-"
-            : t(WORK_PATTERN_LABEL[topPattern?.pattern as WorkPatternDayType])}
+          {hasTopPattern ? t(WORK_PATTERN_LABEL[topPattern.pattern]) : "-"}
         </CardDescription>
       </CardHeader>
 
       <CardContent className="mt-6 p-0 md:mt-7 xl:mt-8">
         <ItemGroup className="gap-4 md:gap-5">
-          {list.map((it) => (
+          {list.map((it, index) => (
             <WorkPatternRow
               key={it.pattern}
-              pattern={it.pattern}
+              index={index}
               ratio={it.percentage}
             />
           ))}

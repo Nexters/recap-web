@@ -10,6 +10,7 @@ import {
 } from "@/entities/auth/lib/request-google-access-token";
 import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 import { useAuth } from "@/entities/auth/ui";
+import useLanguage from "@/entities/language/model/use-language";
 import { useAnalytics } from "@/shared/lib/analytics";
 
 type UseGoogleTokenLoginOptions = {
@@ -20,6 +21,7 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
   const { onLoginSuccess } = options ?? {};
   const { track } = useAnalytics();
   const { login: loginAuth } = useAuth();
+  const { patchLanguage } = useLanguage();
 
   const [ready, setReady] = useState(false);
 
@@ -44,6 +46,8 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
         ...tokens,
         oAuthToken: googleAccessToken,
       });
+
+      patchLanguage();
 
       track("login", { method: "google" });
       await onLoginSuccess?.();

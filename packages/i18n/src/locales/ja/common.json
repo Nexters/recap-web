@@ -4,6 +4,11 @@
     "minute_other": "{{count}}分",
     "second_other": "{{count}}秒"
   },
+  "durationCompact": {
+    "hour_other": "{{count}}時間",
+    "minute_other": "{{count}}分",
+    "second_other": "{{count}}秒"
+  },
   "selectPlaceholder": "選択",
   "meridiemAm": "am",
   "meridiemPm": "pm"

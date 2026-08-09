@@ -8,6 +8,7 @@ import { Divider } from "@/shared/ui";
 
 const TodayRecapSection = ({ recap }: { recap: RecapData }) => {
   const { t } = useLocale("ai-recap");
+  const { t: tc } = useLocale("common");
 
   const detail = recap.recap;
   const timelines = recap.timelines ?? [];
@@ -38,7 +39,7 @@ const TodayRecapSection = ({ recap }: { recap: RecapData }) => {
                 {t("todayRecap.totalScreenTimeLabel")}
               </p>
               <p className="text-body-2 text-gray-900">
-                {formatDuration(totalScreenTime, t)}
+                {formatDuration(totalScreenTime, tc, { format: "short" })}
               </p>
             </div>
             <Divider className="w-0.5 h-12 mx-4" />

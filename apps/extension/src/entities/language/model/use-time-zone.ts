@@ -1,18 +1,16 @@
 import { useEffect } from "react";
-import { SERVER_TIMEZONE } from "@recap/lib";
 
+import { useLanguageStore } from "@/entities/language";
 import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
-import { useGetUserProfile } from "@/features/setting/api/user-query";
+import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
 
+/** 클라이언트에 저장된 언어 설정 기준으로 timeZone을 결정한다. */
 const useTimeZone = () => {
-  const { data } = useGetUserProfile({
-    select: (data) => data?.data?.timeZone,
-  });
-
-  const timeZone = data ?? SERVER_TIMEZONE.UTC;
+  const language = useLanguageStore((s) => s.localize);
+  const timeZone = LANGUAGE_TO_PROFILE[language].timeZone;
 
   useEffect(() => {
-    browserTimeZone.set(timeZone);
+    void browserTimeZone.set(timeZone);
   }, [timeZone]);
 
   return timeZone;

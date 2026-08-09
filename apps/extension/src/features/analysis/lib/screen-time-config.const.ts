@@ -13,12 +13,12 @@ const SCREEN_TIME_MODE_CONFIG: Record<
 > = {
   WEEKLY: {
     emptySrc: EmptyWeekChartImg,
-    titleKey: "screenTime.weeklyAverageTitle",
+    titleKey: "screenTime.weeklyAverageTitleShort",
     emptyAltKey: "screenTime.emptyWeeklyChartAlt",
   },
   DAILY: {
     emptySrc: EmptyDayChartImg,
-    titleKey: "screenTime.title",
+    titleKey: "screenTime.titleShort",
     emptyAltKey: "screenTime.emptyDailyChartAlt",
   },
 };

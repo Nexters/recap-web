@@ -56,13 +56,15 @@ const WeeklyScreenTimeSection = () => {
 
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <h2 className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
+      <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-subtitle-2-rg break-words text-gray-800">
             {t(modeConfig.titleKey)}
           </h2>
-          <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
-            {isEmpty ? "-" : formatDuration(data?.duration ?? 0, tc)}
+          <h3 className="text-headline-sb mt-2 break-words text-gray-900">
+            {isEmpty
+              ? "-"
+              : formatDuration(data?.duration ?? 0, tc, { format: "short" })}
           </h3>
         </div>
 
@@ -70,6 +72,7 @@ const WeeklyScreenTimeSection = () => {
           type="single"
           value={mode}
           onValueChange={setMode}
+          className="shrink-0"
         >
           {SCREEN_TIME_PERIOD_LIST.map(({ value, labelKey }) => (
             <ToggleGroupItem key={value} value={value}>

@@ -15,6 +15,7 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 const CategoryAnalysisSection = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
   const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
   const timeZone = useTimeZone();
 
@@ -37,7 +38,11 @@ const CategoryAnalysisSection = () => {
         categoryName={
           topCategory ? t(CATEGORY_LABEL_KEYS[topCategory.category]) : "-"
         }
-        time={topCategory ? formatDuration(topCategory.stayDuration, t) : "-"}
+        time={
+          topCategory
+            ? formatDuration(topCategory.stayDuration, tc, { format: "short" })
+            : "-"
+        }
       />
 
       <div className="mt-6">

@@ -7,6 +7,14 @@
     "second_one": "{{count}} second",
     "second_other": "{{count}} seconds"
   },
+  "durationCompact": {
+    "hour_one": "{{count}}h",
+    "hour_other": "{{count}}h",
+    "minute_one": "{{count}}m",
+    "minute_other": "{{count}}m",
+    "second_one": "{{count}}s",
+    "second_other": "{{count}}s"
+  },
   "selectPlaceholder": "Select",
   "meridiemAm": "am",
   "meridiemPm": "pm"
