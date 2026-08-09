@@ -3,7 +3,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
 import { workPatternQueryOptions } from "@/features/analysis/api/analysis-query.client";
-import { toWorkPatternRatioData } from "@/features/analysis/model/work-pattern-ratio-data";
+import {
+  toWorkPatternRatioData,
+  WORK_PATTERN_DAYS,
+} from "@/features/analysis/model/work-pattern-ratio-data";
 
 const useWorkPatternList = (date: string) => {
   const timeZone = useTimeZone();
@@ -12,26 +15,24 @@ const useWorkPatternList = (date: string) => {
   );
 
   return useMemo(() => {
-    if (!data) {
-      return {
-        total: 0,
-        list: [],
-        topPattern: null,
-      };
-    }
-    const counts = data.counts ?? {};
+    const counts = data?.counts ?? {};
 
-    const values = Object.values(counts).filter(
-      (v): v is number => typeof v === "number" && Number.isFinite(v) && v > 0,
+    const ratioByPattern = new Map(
+      toWorkPatternRatioData(counts).map((item) => [
+        item.pattern,
+        item.percentage,
+      ]),
     );
-    const total = values.reduce((a, b) => a + b, 0);
-
-    const list = toWorkPatternRatioData(counts);
+    const list = WORK_PATTERN_DAYS.map((pattern) => ({
+      pattern,
+      percentage: ratioByPattern.get(pattern) ?? 0,
+    }));
 
     const topPattern = list.reduce((prev, cur) =>
       cur.percentage > prev.percentage ? cur : prev,
     );
-    return { total, list, topPattern };
+
+    return { list, topPattern };
   }, [data]);
 };
 
