@@ -51,7 +51,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
           direction="column"
           className="items-stretch gap-6 md:flex-row md:items-end md:justify-between"
         >
-          <Stack gap="none" className="gap-2">
+          <Stack gap="none" className="min-w-0 flex-1 gap-2">
             <p className="text-heading-md text-blue-400">
               {t("screenTime.todayRecapTitle")}
             </p>
@@ -60,8 +60,8 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
             </CardTitle>
           </Stack>
 
-          <Flex align="flex-end" className="gap-4">
-            <Stack gap="none" className="w-42 gap-1">
+          <Flex align="flex-end" className="shrink-0 flex-nowrap gap-4">
+            <Stack gap="none" className="w-fit min-w-38 shrink-0 gap-1">
               <CardDescription className="text-subtitle-2-rg text-gray-500">
                 {t("todayRecap.totalScreenTimeLabel")}
               </CardDescription>
@@ -72,7 +72,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
 
             <Divider orientation="vertical" className="h-18" />
 
-            <Stack gap="none" className="w-42 gap-1">
+            <Stack gap="none" className="w-fit min-w-38 shrink-0 gap-1">
               <CardDescription className="text-subtitle-2-rg text-gray-500">
                 {t("todayRecap.measurementTimeLabel")}
               </CardDescription>
@@ -83,16 +83,16 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
           </Flex>
         </Flex>
 
-        <Item className="mt-8 flex-nowrap items-center gap-4 self-start rounded-full border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none xl:mt-12">
-          <ItemContent className="min-w-0 flex-1 flex-row flex-wrap items-center gap-4 p-0">
+        <Item className="mt-8 w-full max-w-full flex-nowrap items-start gap-4 self-stretch rounded-2xl border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none xl:mt-12">
+          <ItemContent className="flex min-w-0 flex-1 flex-row flex-nowrap items-start gap-4 p-0">
             <div className="flex shrink-0 items-center gap-2">
-              <AIRecapIcon />
-              <ItemTitle className="text-subtitle-1-sb text-gray-900">
+              <AIRecapIcon className="size-6 shrink-0" />
+              <ItemTitle className="text-subtitle-1-sb leading-6.5 whitespace-nowrap text-gray-900">
                 {t("todayRecap.dailySummaryLabel")}
               </ItemTitle>
             </div>
 
-            <ItemDescription className="text-body-2 min-w-0 text-gray-800">
+            <ItemDescription className="text-body-2 min-w-0 flex-1 leading-6.5 break-words text-gray-800">
               {summary}
             </ItemDescription>
           </ItemContent>
@@ -100,13 +100,14 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
       </CardHeader>
 
       <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 md:grid-cols-[1fr_464px]">
-        <div className="relative order-1 h-97 overflow-hidden md:order-2 md:h-auto md:min-h-105">
+        <div className="relative order-1 w-full overflow-hidden md:order-2">
           <Image
             src={recapImage}
             alt="recapImg"
-            fill
+            width={recapImage.width}
+            height={recapImage.height}
             sizes="(max-width: 767px) 100vw, 464px"
-            className="object-fill"
+            className="h-auto w-full"
           />
         </div>
 

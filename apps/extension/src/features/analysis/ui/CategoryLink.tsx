@@ -7,7 +7,7 @@ const CategoryLink = ({
   faviconUrl,
   stayDuration,
 }: CategoryWebsiteAnalysis) => {
-  const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
 
   return (
     <div className="bg-gray-75 flex items-center justify-between rounded-full pl-2 pr-4 py-2">
@@ -25,7 +25,7 @@ const CategoryLink = ({
       </div>
 
       <p className="text-body-1 ml-2 max-w-19.25 shrink-0 truncate text-gray-900">
-        {formatDuration(stayDuration, t)}
+        {formatDuration(stayDuration, tc, { format: "short" })}
       </p>
     </div>
   );

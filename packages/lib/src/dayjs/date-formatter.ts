@@ -1,3 +1,4 @@
+import { DATE_FORMAT } from "./date-format.const";
 import { dayjs } from "./index";
 import { CURRENT_TIMEZONE } from "./time-zone.const";
 
@@ -51,6 +52,17 @@ export type ResolvedDateFormatterOptions = ReturnType<
   typeof resolveDateFormatterOptions
 >;
 
+const isTimeOnlyString = (value: DateInput): value is string =>
+  typeof value === "string" && /^\d{1,2}:\d{2}(:\d{2})?$/.test(value);
+
+const normalizeDateInput = (date: DateInput): DateInput => {
+  if (isTimeOnlyString(date)) {
+    return `1970-01-01T${date.length <= 5 ? `${date}:00` : date}`;
+  }
+
+  return date;
+};
+
 export const formatDate = (
   date: DateInput,
   format = "YYYY-MM-DD",
@@ -58,8 +70,12 @@ export const formatDate = (
 ): string => {
   if (!date) return "";
 
+  const normalized = normalizeDateInput(date);
   const { locale, timeZone } = resolveDateFormatterOptions(options);
-  const target = dayjs(date).tz(timeZone);
+  const target = isTimeOnlyString(date)
+    ? dayjs.utc(normalized)
+    : dayjs(normalized).tz(timeZone);
+
   if (!target.isValid()) return "";
 
   return target.locale(toDayjsLocale(locale)).format(format);
@@ -75,7 +91,7 @@ export const formatTime = (
   const target = dayjs(date).tz(timeZone);
   if (!target.isValid()) return "";
 
-  return target.format(timeFormat === 12 ? "h:mma" : "HH:mm");
+  return target.format(timeFormat === 12 ? "h:mma" : DATE_FORMAT.HH_MM);
 };
 
 export const formatTimeRange = (

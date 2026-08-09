@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { DATE_FORMAT, formatDate } from "@recap/lib";
 import { cn } from "@recap/ui";
 
 import TimeLineBackgroundImg from "@/shared/assets/img/timeline-bg.png";
@@ -104,7 +105,7 @@ const TimeLine = ({
                       <div className="size-1 rounded-full bg-gray-200" />
 
                       <p className="text-body-1 text-gray-500">
-                        {`${item.startedAt} - ${item.endedAt}`}
+                        {`${formatDate(item.startedAt, DATE_FORMAT.HH_MM)}-${formatDate(item.endedAt, DATE_FORMAT.HH_MM)}`}
                       </p>
                     </div>
                   </div>

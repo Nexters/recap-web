@@ -27,6 +27,7 @@ const CategoryAnalysisItem = ({
 }: CategoryAnalysisItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
 
   return (
     <Accordion
@@ -38,21 +39,21 @@ const CategoryAnalysisItem = ({
       <AccordionItem value="item-1">
         <AccordionHeader className="w-full">
           <AccordionTrigger className="w-full">
-            <div className="w-full pt-2 pb-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Badge className="size-4.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 flex items-center justify-center p-0">
+            <div className="flex w-full min-w-0 items-center justify-between gap-2 pt-2 pb-3">
+              <div className="flex min-w-0 flex-1 items-center gap-2">
+                <Badge className="size-4.5 shrink-0 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 flex items-center justify-center p-0">
                   {count}
                 </Badge>
-                <p className="text-subtitle-2-sb text-gray-900">
+                <p className="text-subtitle-2-sb min-w-0 truncate text-gray-900">
                   {t(CATEGORY_LABEL_KEYS[category])}
                 </p>
-                <p className="text-subtitle-2-rg text-gray-800">
-                  {formatDuration(stayDuration, t)}
+                <p className="text-subtitle-2-rg shrink-0 text-gray-800">
+                  {formatDuration(stayDuration, tc, { format: "short" })}
                 </p>
               </div>
               <Icon
                 name={isOpen ? "arrow-up" : "arrow-down"}
-                className="w-4 h-4"
+                className="size-4 shrink-0"
               />
             </div>
           </AccordionTrigger>
