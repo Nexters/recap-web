@@ -14,16 +14,16 @@ const container = document.getElementById("root");
 if (container) {
   createRoot(container).render(
     <StrictMode>
-      <LanguageProvider>
-        <AuthProvider>
-          <QueryProvider>
+      <AuthProvider>
+        <QueryProvider>
+          <LanguageProvider>
             <AuthChangedEffects />
             <ToastProvider>
               <SidePanel />
             </ToastProvider>
-          </QueryProvider>
-        </AuthProvider>
-      </LanguageProvider>
+          </LanguageProvider>
+        </QueryProvider>
+      </AuthProvider>
     </StrictMode>,
   );
 }
