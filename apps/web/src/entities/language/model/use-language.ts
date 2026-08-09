@@ -1,29 +1,28 @@
-import type { LanguageType } from "@recap/i18n";
-import { DEFAULT_LANGUAGE } from "@recap/i18n";
+"use client";
 
-import { useAuth } from "@/entities/auth/ui";
-import { LANGUAGE_MAP } from "@/entities/language/config/language.const";
+import { useCallback } from "react";
+import type { LanguageType } from "@recap/i18n";
+
 import { useLanguageStore } from "@/entities/language/model/language.store";
-import { useGetUserProfile } from "@/features/settings/api/user-query.client";
+import { usePatchUserProfile } from "@/features/settings/api/user-query.client";
+import { LANGUAGE_TO_PROFILE } from "@/features/settings/config/language.const";
 
 const useLanguage = () => {
-  const storedLanguage = useLanguageStore((s) => s.localize);
+  const language = useLanguageStore((s) => s.localize);
   const setLanguage = useLanguageStore((s) => s.setLanguage);
-  const { isLoggedIn } = useAuth();
-  const { data: profileLanguage } = useGetUserProfile({
-    select: (data) => data?.data?.language,
-    enabled: isLoggedIn,
-  });
 
-  const languageFromProfile = profileLanguage
-    ? (LANGUAGE_MAP[profileLanguage] ?? DEFAULT_LANGUAGE)
-    : undefined;
+  const { mutate } = usePatchUserProfile();
 
-  const language: LanguageType = isLoggedIn
-    ? (languageFromProfile ?? storedLanguage)
-    : storedLanguage;
+  const patchLanguageWith = useCallback((nextLanguage?: LanguageType) => {
+    const target = nextLanguage ?? useLanguageStore.getState().localize;
+    mutate(LANGUAGE_TO_PROFILE[target]);
+  }, []);
 
-  return { language, setLanguage };
+  return {
+    language,
+    setLanguage,
+    patchLanguage: patchLanguageWith,
+  };
 };
 
 export default useLanguage;
