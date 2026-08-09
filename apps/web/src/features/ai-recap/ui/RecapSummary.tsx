@@ -100,13 +100,14 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
       </CardHeader>
 
       <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 md:grid-cols-[1fr_464px]">
-        <div className="relative order-1 h-97 overflow-hidden md:order-2 md:h-auto md:min-h-105">
+        <div className="relative order-1 w-full overflow-hidden md:order-2">
           <Image
             src={recapImage}
             alt="recapImg"
-            fill
+            width={recapImage.width}
+            height={recapImage.height}
             sizes="(max-width: 767px) 100vw, 464px"
-            className="object-fill"
+            className="h-auto w-full"
           />
         </div>
 
