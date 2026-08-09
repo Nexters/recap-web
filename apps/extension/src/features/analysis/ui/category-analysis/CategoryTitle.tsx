@@ -11,10 +11,10 @@ const CategoryTitle = ({
 
   return (
     <>
-      <h2 className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
+      <h2 className="text-subtitle-2-rg w-fit text-gray-800">
         {t("category.title")}
       </h2>
-      <h3 className="text-headline-sb mt-1 whitespace-nowrap text-gray-900">
+      <h3 className="text-headline-sb mt-1 break-words text-gray-900">
         <Trans
           ns="analysis"
           i18nKey="category.shoppingFocusSummary"

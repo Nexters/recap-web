@@ -5,6 +5,8 @@
     "buttonToday": "오늘",
     "buttonWeekly": "주간",
     "weeklyAverageTitle": "이번주 평균 스크린타임",
+    "titleShort": "총 스크린타임",
+    "weeklyAverageTitleShort": "이번주 평균 스크린타임",
     "perDayAverage": "하루 {{duration}}",
     "dailyTimeSlotSubLabel": "오늘 {{start}}:00 - {{end}}:00",
     "emptyWeeklyChartAlt": "이번 주간에는 아직 누적된 활동이 보이지 않아요",

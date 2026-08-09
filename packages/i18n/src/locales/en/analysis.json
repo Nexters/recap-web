@@ -5,6 +5,8 @@
     "buttonToday": "Today",
     "buttonWeekly": "Weekly",
     "weeklyAverageTitle": "This week's average screen time",
+    "titleShort": "Total Screen Time",
+    "weeklyAverageTitleShort": "This week's average",
     "perDayAverage": "{{duration}} per day",
     "dailyTimeSlotSubLabel": "Today {{start}}:00 - {{end}}:00",
     "emptyWeeklyChartAlt": "No accumulated activity for this week yet",
