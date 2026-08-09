@@ -83,16 +83,16 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
           </Flex>
         </Flex>
 
-        <Item className="mt-8 flex-nowrap items-center gap-4 self-start rounded-full border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none xl:mt-12">
-          <ItemContent className="min-w-0 flex-1 flex-row flex-wrap items-center gap-4 p-0">
+        <Item className="mt-8 w-full max-w-full flex-nowrap items-start gap-4 self-stretch rounded-2xl border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none xl:mt-12">
+          <ItemContent className="flex min-w-0 flex-1 flex-row flex-nowrap items-start gap-4 p-0">
             <div className="flex shrink-0 items-center gap-2">
-              <AIRecapIcon />
-              <ItemTitle className="text-subtitle-1-sb text-gray-900">
+              <AIRecapIcon className="size-6 shrink-0" />
+              <ItemTitle className="text-subtitle-1-sb leading-6.5 whitespace-nowrap text-gray-900">
                 {t("todayRecap.dailySummaryLabel")}
               </ItemTitle>
             </div>
 
-            <ItemDescription className="text-body-2 min-w-0 text-gray-800">
+            <ItemDescription className="text-body-2 min-w-0 flex-1 leading-6.5 break-words text-gray-800">
               {summary}
             </ItemDescription>
           </ItemContent>
