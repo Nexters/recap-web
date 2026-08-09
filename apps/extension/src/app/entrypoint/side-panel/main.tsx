@@ -4,7 +4,7 @@ import { ToastProvider } from "@recap/ui";
 
 import { LanguageProvider } from "@/app/providers/language-provider";
 import { QueryProvider } from "@/app/providers/query-provider";
-import { AuthProvider } from "@/entities/auth/ui";
+import { AuthChangedEffects, AuthProvider } from "@/entities/auth/ui";
 
 import { SidePanel } from "./SidePanel";
 
@@ -17,6 +17,7 @@ if (container) {
       <LanguageProvider>
         <AuthProvider>
           <QueryProvider>
+            <AuthChangedEffects />
             <ToastProvider>
               <SidePanel />
             </ToastProvider>

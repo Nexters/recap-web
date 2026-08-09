@@ -8,12 +8,32 @@ import {
 
 import { tokenStore } from "@/entities/auth/model/token-store";
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
+import { useLanguageStore } from "@/entities/language";
+import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
+import useLanguage from "@/entities/language/model/use-language";
+import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
 import useBrowserMessage from "@/shared/lib/browser/use-browser-message";
 
 import { AuthContext, type AuthValue } from "./auth-context";
+import { useAuth } from "./use-auth";
 
 type AuthProviderProps = {
   children: ReactNode;
+};
+
+export const AuthChangedEffects = () => {
+  const { refreshAuth } = useAuth();
+  const { patchLanguage } = useLanguage();
+
+  useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
+    void refreshAuth();
+
+    const language = useLanguageStore.getState().localize;
+    patchLanguage();
+    void browserTimeZone.set(LANGUAGE_TO_PROFILE[language].timeZone);
+  });
+
+  return null;
 };
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -42,10 +62,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     refreshAuth();
   }, [refreshAuth]);
-
-  useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
-    refreshAuth();
-  });
 
   const value = useMemo<AuthValue>(
     () => ({ isReady, isLoggedIn, refreshAuth, unLogin, login }),
