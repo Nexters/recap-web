@@ -26,8 +26,8 @@ const browserHistory = {
       closedAt,
       timeZone,
       title: session.title,
-      description: session.metadata.description,
-      faviconUrl: session.metadata.faviconUrl,
+      description: session.description,
+      faviconUrl: session.faviconUrl,
       isClosed: true,
     } as CreateHistoryDTO);
   },
@@ -48,8 +48,8 @@ const browserHistory = {
       closedAt: session.closedAt,
       timeZone,
       title: session.title,
-      description: session.metadata.description,
-      faviconUrl: session.metadata.faviconUrl,
+      description: session.description,
+      faviconUrl: session.faviconUrl,
       isClosed: false,
     } as CreateHistoryDTO);
   },

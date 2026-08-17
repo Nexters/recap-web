@@ -2,10 +2,8 @@ export interface PageSnapshot {
   url: string;
   title: string;
   scrollDepth?: number;
-  metadata: {
-    description?: string | null;
-    faviconUrl?: string | null;
-  };
+  description?: string | null;
+  faviconUrl?: string | null;
 }
 
 export interface StorageSession extends PageSnapshot {
