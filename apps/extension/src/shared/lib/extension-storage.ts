@@ -1,13 +1,11 @@
 import browser from "webextension-polyfill";
 
-import type {
-  PageSnapshot,
-  StorageSession,
-} from "@/entities/history/model/storage.type";
+import type { StorageSession } from "@/entities/history/model/storage.type";
 
 import { ExtensionStorageKey } from "./extension-storage-key";
 
-type BrowserTabStorage = Record<string, PageSnapshot>;
+type BrowserTabStorage = Record<string, StorageSession>;
+type WindowTabStorage = Record<string, number>;
 
 const setItem = async <T>(
   key: ExtensionStorageKey,
@@ -60,11 +58,37 @@ const getSessionById = async (tabId: number) => {
   return tabs[String(tabId)] ?? null;
 };
 
+const getWindowTab = async () =>
+  (await getItemOrNull<WindowTabStorage>(ExtensionStorageKey.WindowTab)) ?? {};
+
+const getWindowTabById = async (windowId: number) => {
+  const windowTabs = await getWindowTab();
+  return windowTabs[String(windowId)] ?? null;
+};
+
+const setWindowTab = async (windowId: number, tabId: number) => {
+  const windowTabs = await getWindowTab();
+  await setItem(ExtensionStorageKey.WindowTab, {
+    ...windowTabs,
+    [String(windowId)]: tabId,
+  });
+};
+
+const deleteWindowTab = async (windowId: number) => {
+  const windowTabs = await getWindowTab();
+  delete windowTabs[String(windowId)];
+  await setItem(ExtensionStorageKey.WindowTab, windowTabs);
+};
+
 export {
   deleteSession,
+  deleteWindowTab,
   getItemOrNull,
   getSession,
   getSessionById,
+  getWindowTab,
+  getWindowTabById,
   setItem,
   setSession,
+  setWindowTab,
 };
