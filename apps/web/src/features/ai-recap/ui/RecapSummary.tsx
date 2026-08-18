@@ -99,26 +99,25 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
         </Item>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 md:grid-cols-[1fr_464px]">
-        <div className="relative order-1 w-full overflow-hidden md:order-2">
+      <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 xl:grid-cols-[1fr_464px]">
+        <div className="relative order-1 aspect-[464/420] min-h-0 w-full max-w-full overflow-hidden md:aspect-auto md:h-[388px] xl:order-2 xl:h-[420px] xl:w-[464px] xl:max-w-[464px] xl:shrink-0">
           <Image
             src={recapImage}
             alt="recapImg"
-            width={recapImage.width}
-            height={recapImage.height}
-            sizes="(max-width: 767px) 100vw, 464px"
-            className="h-auto w-full"
+            fill
+            sizes="(max-width: 1279px) 100vw, 464px"
+            className="size-full object-cover object-center"
           />
         </div>
 
         {sections.length === 0 ? (
-          <div className="order-2 px-5 py-6 md:order-1 md:px-6 md:pt-6 md:pr-9 md:pb-13 xl:px-10">
+          <div className="order-2 px-5 py-6 md:px-6 md:pt-6 md:pr-9 md:pb-13 xl:order-1 xl:px-10">
             <p className="text-body-1 text-gray-500">
               {t("todayRecap.summarySectionsEmpty")}
             </p>
           </div>
         ) : (
-          <ItemGroup className="order-2 gap-0 md:order-1">
+          <ItemGroup className="order-2 gap-0 xl:order-1">
             {sections.map((section, index) => (
               <Item
                 key={`${section.title}-${index}`}
