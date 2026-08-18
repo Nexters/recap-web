@@ -7,7 +7,7 @@ import { Button, Input, useToast } from "@recap/ui";
 import { USER_KEYS } from "@/features/setting/api/query-keys";
 import { usePostExcludeDomain } from "@/features/setting/api/user-query";
 import DomainItem from "@/features/setting/ui/DomainItem";
-import { domainStore } from "@/shared/lib/domain-store";
+import { excludedDomainStore } from "@/shared/lib/domain-store";
 
 type UntrackedDomainSettingProps = {
   domains: string[];
@@ -50,7 +50,7 @@ const UntrackedDomainSetting = ({ domains }: UntrackedDomainSettingProps) => {
       { domain: trimmed },
       {
         onSuccess: () => {
-          domainStore.addExcludedDomain(trimmed);
+          excludedDomainStore.add(trimmed);
           setDomainValue("");
         },
       },

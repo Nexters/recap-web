@@ -15,7 +15,7 @@ function pageLocationOriginOnly(href: string): string {
 function sendPageVisited() {
   const pageData = getPageSnapshot();
 
-  void analytics.firePageViewEvent(
+  analytics.firePageViewEvent(
     document.title || "(no title)",
     pageLocationOriginOnly(window.location.href),
   );
