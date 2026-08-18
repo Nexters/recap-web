@@ -1,84 +1,38 @@
-import {
-  type PageSnapshot,
-  type StorageSession,
-} from "@/entities/history/model/storage.type";
-import { getStorage, setStorage } from "@/shared/lib/storage";
+import { historyAPIService } from "@/entities/history/api";
+import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
+import type { StorageSession } from "@/entities/history/model/storage.type";
+import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
+import { excludedDomainStore } from "@/shared/lib/domain-store";
+import { extractDomainUrl } from "@/shared/lib/url";
 
-async function getBrowserSession() {
-  const storage = await getStorage(["sessions"]);
-  return storage.sessions ?? {};
-}
-
-async function getBrowserSessionById(tabId: string) {
-  const sessions = await getBrowserSession();
-  return { tabId: Number(tabId), ...sessions[tabId] };
-}
-
-async function setBrowserSession(sessions: Record<string, StorageSession>) {
-  await setStorage({ sessions });
-}
-
-async function clearBrowserSession() {
-  await setStorage({ sessions: {} });
-}
-
-async function deleteBrowserSession(tabId: string) {
-  if (!tabId) return;
-  const sessions = await getBrowserSession();
-
-  delete sessions[tabId];
-  await setBrowserSession(sessions);
-}
-
-async function addBrowserSession(tabId: string, data: PageSnapshot) {
-  if (!tabId) return;
-  const sessions = await getBrowserSession();
-
-  sessions[tabId] = {
-    ...data,
-    visitedAt: new Date().getTime() / 1000,
-    closedAt: null,
-  };
-
-  await setBrowserSession(sessions);
-}
-
-async function closeBrowserSession() {
-  let result: StorageSession | null = null;
-  const sessions = await getBrowserSession();
-
-  for (const [tabId, session] of Object.entries(sessions)) {
-    if (session.closedAt === null) {
-      const closedAt = new Date().getTime() / 1000;
-      session.closedAt = closedAt;
-      result = {
-        ...session,
-        tabId: Number(tabId),
-        closedAt,
-      };
-      break;
+const browserHistory = {
+  record: async (session: StorageSession | null) => {
+    if (!session) {
+      return;
     }
-  }
-  await setBrowserSession(sessions);
-  return result;
-}
+    if (await excludedDomainStore.isExcluded(session.url)) return;
 
-async function visitBrowserSession(tabId: string) {
-  const sessions = await getBrowserSession();
+    const timeZone = await browserTimeZone.get();
 
-  if (!sessions[tabId]) return;
-  sessions[tabId].visitedAt = new Date().getTime() / 1000;
-  sessions[tabId].closedAt = null;
-  await setBrowserSession(sessions);
-}
+    if (
+      session?.closedAt &&
+      session.visitedAt &&
+      session.closedAt - session.visitedAt <= 10
+    ) {
+      return;
+    }
 
-export {
-  addBrowserSession,
-  clearBrowserSession,
-  closeBrowserSession,
-  deleteBrowserSession,
-  getBrowserSession,
-  getBrowserSessionById,
-  setBrowserSession,
-  visitBrowserSession,
+    historyAPIService.createHistory({
+      url: extractDomainUrl(session.url),
+      visitedAt: session.visitedAt,
+      closedAt: session.closedAt,
+      timeZone,
+      title: session.title,
+      description: session.description,
+      faviconUrl: session.faviconUrl,
+      isClosed: session?.isClosed ?? false,
+    } as CreateHistoryDTO);
+  },
 };
+
+export default browserHistory;

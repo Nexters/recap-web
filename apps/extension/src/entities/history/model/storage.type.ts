@@ -2,16 +2,16 @@ export interface PageSnapshot {
   url: string;
   title: string;
   scrollDepth?: number;
-  metadata: {
-    description?: string | null;
-    faviconUrl?: string | null;
-  };
+  description?: string | null;
+  faviconUrl?: string | null;
 }
 
 export interface StorageSession extends PageSnapshot {
   visitedAt: number;
   closedAt?: number | null;
   tabId?: number;
+  windowId?: number;
+  isClosed?: boolean;
 }
 
 export interface StorageData {

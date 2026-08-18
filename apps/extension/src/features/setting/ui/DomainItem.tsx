@@ -4,7 +4,7 @@ import { Button, useToast } from "@recap/ui";
 
 import { USER_KEYS } from "@/features/setting/api/query-keys";
 import { useDeleteExcludeDomain } from "@/features/setting/api/user-query";
-import { domainStore } from "@/shared/lib/domain-store";
+import { excludedDomainStore } from "@/shared/lib/domain-store";
 
 const DomainItem = ({ domain }: { domain: string }) => {
   const { t } = useLocale("settings");
@@ -34,7 +34,7 @@ const DomainItem = ({ domain }: { domain: string }) => {
       { domain },
       {
         onSuccess: () => {
-          domainStore.deleteExcludedDomain(domain);
+          excludedDomainStore.remove(domain);
         },
       },
     );

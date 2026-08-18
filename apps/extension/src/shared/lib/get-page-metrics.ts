@@ -8,7 +8,7 @@ function getPageSnapshot(): PageSnapshot {
       ?.content ??
     null;
 
-  const faviconHref =
+  const faviconUrl =
     document.querySelector<HTMLLinkElement>('link[rel="icon"]')?.href ??
     document.querySelector<HTMLLinkElement>('link[rel="shortcut icon"]')
       ?.href ??
@@ -17,10 +17,9 @@ function getPageSnapshot(): PageSnapshot {
   return {
     url: window.location.href,
     title: document.title,
-    metadata: {
-      description,
-      faviconUrl: faviconHref,
-    },
+    description,
+    faviconUrl,
   };
 }
+
 export { getPageSnapshot };
