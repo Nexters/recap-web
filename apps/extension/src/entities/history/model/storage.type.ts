@@ -11,6 +11,7 @@ export interface StorageSession extends PageSnapshot {
   closedAt?: number | null;
   tabId?: number;
   windowId?: number;
+  isClosed?: boolean;
 }
 
 export interface StorageData {

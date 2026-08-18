@@ -2,32 +2,29 @@ import browser from "webextension-polyfill";
 
 import { authUnTokenAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
-import {
-  addBrowserSession,
-  clearBrowserSession,
-  closeBrowserSession,
-  deleteBrowserSession,
-  getBrowserSession,
-  getBrowserSessionById,
-  visitBrowserSession,
-} from "@/entities/history/model/browser.service";
-import browserHistory from "@/entities/history/model/browser-history";
+import browserHistory from "@/entities/history/model/browser.service";
 import {
   type ExtensionMessage,
   MESSAGE_TYPE,
 } from "@/entities/history/model/messages.type";
-import type { StorageSession } from "@/entities/history/model/storage.type";
 import analytics from "@/shared/api/google-analytics/google-analytics.service";
-import { domainStore } from "@/shared/lib/domain-store";
-
-const removedTabIds = new Set<number>();
+import { getCurrentTime } from "@/shared/lib/date";
+import {
+  deleteSession,
+  deleteWindowTab,
+  getSession,
+  getSessionById,
+  getWindowTabById,
+  setSession,
+  setWindowTab,
+} from "@/shared/lib/extension-storage";
 
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error: unknown) => console.error(error));
 
 browser.runtime.onInstalled.addListener((details) => {
-  void analytics.fireEvent("extension_lifecycle", {
+  analytics.fireEvent("extension_lifecycle", {
     reason: details.reason,
     ...(details.previousVersion != null
       ? { previous_version: details.previousVersion }
@@ -35,65 +32,118 @@ browser.runtime.onInstalled.addListener((details) => {
   });
 });
 
-browser.windows.onRemoved.addListener(async () => {
-  getBrowserSession().then((sessions) => {
-    Object.entries(sessions).forEach(([tabId, session]) => {
-      browserHistory.createClosedHistory({
+browser.windows.onRemoved.addListener(async (windowId) => {
+  const tabs = await getSession();
+  const now = getCurrentTime();
+
+  for (const [tabId, session] of Object.entries(tabs)) {
+    if (session.windowId !== windowId) continue;
+
+    if (session.closedAt == null) {
+      console.log("[recap] onRemoved", {
         ...session,
+        closedAt: now,
         tabId: Number(tabId),
-      } as StorageSession);
-    });
-  });
-  clearBrowserSession();
+        isClosed: true,
+      });
+      await browserHistory.record({
+        ...session,
+        closedAt: now,
+        tabId: Number(tabId),
+        isClosed: true,
+      });
+    }
+
+    await deleteSession(Number(tabId));
+  }
+
+  await deleteWindowTab(windowId);
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  removedTabIds.add(tabId);
-  getBrowserSessionById(String(tabId)).then((session) => {
-    if (!session) return;
-    browserHistory.createClosedHistory(session as StorageSession);
-    deleteBrowserSession(String(tabId));
+  const session = await getSessionById(tabId);
+  if (!session) return;
 
-    // Clean up after a short delay to avoid memory leaks
-    setTimeout(() => {
-      removedTabIds.delete(tabId);
-    }, 1000);
-  });
-});
-
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  const closedSession = await closeBrowserSession();
-  await visitBrowserSession(String(tabId));
-  if (!closedSession) return;
-  const excludedDomains = await domainStore.getExcludedDomains();
-
-  if (
-    browserHistory.isExcludedDomain(closedSession?.url ?? "", excludedDomains)
-  ) {
+  // onActivated에서 이미 closedAt + record 처리된 경우
+  if (session.closedAt != null) {
+    await deleteSession(tabId);
     return;
   }
 
-  if (!removedTabIds.has(Number(closedSession.tabId))) {
-    await browserHistory.createHistory(closedSession as StorageSession);
+  console.log("[recap] onRemoved", {
+    ...session,
+    closedAt: getCurrentTime(),
+    tabId,
+    isClosed: true,
+  });
+
+  await browserHistory.record({
+    ...session,
+    closedAt: getCurrentTime(),
+    tabId,
+    isClosed: true,
+  });
+  await deleteSession(tabId);
+});
+
+browser.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
+  const previousTabId = await getWindowTabById(windowId);
+  const now = getCurrentTime();
+
+  if (previousTabId != null && previousTabId !== tabId) {
+    const previousSession = await getSessionById(previousTabId);
+    if (previousSession) {
+      const closed = {
+        ...previousSession,
+        closedAt: now,
+        tabId: previousTabId,
+        windowId,
+        isClosed: true,
+      };
+      await setSession(previousTabId, closed);
+      await browserHistory.record(closed);
+      console.log("[recap] closed (onActivated) >>>", closed);
+    }
   }
+
+  if (previousTabId !== tabId) {
+    const session = await getSessionById(tabId);
+    if (session) {
+      const visited = {
+        ...session,
+        visitedAt: now,
+        closedAt: null,
+        tabId,
+        windowId,
+        isClosed: false,
+      };
+      await setSession(tabId, visited);
+    }
+  }
+
+  await setWindowTab(windowId, tabId);
 });
 
 browser.runtime.onMessage.addListener(
-  async (message: unknown, sender: browser.Runtime.MessageSender) => {
+  (message: unknown, sender: browser.Runtime.MessageSender) => {
     const msg = message as ExtensionMessage;
 
     if (msg.type === MESSAGE_TYPE.PAGE_VISITED) {
-      const excludedDomains = await domainStore.getExcludedDomains();
+      const tabId = sender.tab?.id;
+      const windowId = sender.tab?.windowId;
+      if (!tabId) return;
 
-      if (browserHistory.isExcludedDomain(msg.data.url, excludedDomains)) {
-        return;
+      setSession(tabId, {
+        ...msg.data,
+        visitedAt: getCurrentTime(),
+        closedAt: null,
+        tabId,
+        windowId,
+      });
+
+      if (windowId) {
+        setWindowTab(windowId, tabId);
       }
-
-      await addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
-
-      const host = new URL(msg.data.url).host;
-      void analytics.fireEvent("content_session_tracked", { host });
-
       return;
     }
 
