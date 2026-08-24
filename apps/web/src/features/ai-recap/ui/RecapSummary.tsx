@@ -99,8 +99,8 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
         </Item>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 xl:grid-cols-[1fr_464px]">
-        <div className="relative order-1 aspect-[464/420] min-h-0 w-full max-w-full overflow-hidden md:aspect-auto md:h-[388px] xl:order-2 xl:h-[420px] xl:w-[464px] xl:max-w-[464px] xl:shrink-0">
+      <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 xl:grid-cols-[1fr_464px] xl:items-stretch">
+        <div className="relative order-1 aspect-[464/420] min-h-0 w-full max-w-full overflow-hidden md:aspect-auto md:h-[388px] xl:order-2 xl:aspect-auto xl:h-full xl:w-[464px] xl:max-w-[464px] xl:shrink-0">
           <Image
             src={recapImage}
             alt="recapImg"
