@@ -1,3 +1,4 @@
+import { tokenStore } from "@/entities/auth/model/token-store";
 import { historyAPIService } from "@/entities/history/api";
 import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
 import type { StorageSession } from "@/entities/history/model/storage.type";
@@ -11,6 +12,7 @@ const browserHistory = {
       return;
     }
     if (await excludedDomainStore.isExcluded(session.url)) return;
+    if (!(await tokenStore.isAuthenticated())) return;
 
     const timeZone = await browserTimeZone.get();
 

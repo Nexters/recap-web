@@ -20,6 +20,10 @@ export const tokenStore = {
     return result.refreshToken;
   },
 
+  async isAuthenticated(): Promise<boolean> {
+    return Boolean(await tokenStore.getRefresh());
+  },
+
   async set(tokens: ClientAuthTokens): Promise<void> {
     const now = Date.now();
 
