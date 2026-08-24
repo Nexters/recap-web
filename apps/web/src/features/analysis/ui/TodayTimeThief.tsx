@@ -11,7 +11,7 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
-import { longestStayedWebsiteQueryOptions } from "@/features/analysis/api/analysis-query.client";
+import { dashboardQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import TimeThiefIllustration from "@/features/analysis/ui/TimeThiefIllustration";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
@@ -21,12 +21,14 @@ const TodayTimeThief = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
   const timeZone = useTimeZone();
-  const { data } = useSuspenseQuery(
-    longestStayedWebsiteQueryOptions({
+  const { data } = useSuspenseQuery({
+    ...dashboardQueryOptions({
       date,
       timeZone,
+      period: "DAILY",
     }),
-  );
+    select: (dashboard) => dashboard.getLongestStayedWebsiteResponse,
+  });
 
   const host = getHostFromUrl(data?.domain ?? "") ?? "";
 

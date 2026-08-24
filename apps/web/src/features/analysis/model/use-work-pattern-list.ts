@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
-import { workPatternQueryOptions } from "@/features/analysis/api/analysis-query.client";
+import { dashboardQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import {
   toWorkPatternRatioData,
   WORK_PATTERN_DAYS,
@@ -10,9 +10,10 @@ import {
 
 const useWorkPatternList = (date: string) => {
   const timeZone = useTimeZone();
-  const { data } = useSuspenseQuery(
-    workPatternQueryOptions({ date, timeZone }),
-  );
+  const { data } = useSuspenseQuery({
+    ...dashboardQueryOptions({ date, timeZone, period: "DAILY" }),
+    select: (dashboard) => dashboard.getWorkPatternResponse,
+  });
 
   return useMemo(() => {
     const counts = data?.counts ?? {};

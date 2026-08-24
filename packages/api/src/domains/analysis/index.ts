@@ -1,4 +1,5 @@
 export * from "./category-analysis.schema";
+export * from "./dashboard.schema";
 export * from "./frequently-visited-websites.schema";
 export * from "./longest-stayed-website.schema";
 export * from "./screen-time.schema";

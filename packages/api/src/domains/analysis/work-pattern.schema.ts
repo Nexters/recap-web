@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { CreateResponseSchema } from "../../schemas";
-
 export const WorkPatternDayEnum = z.enum([
   "DAWN",
   "MORNING",
@@ -23,8 +21,5 @@ const WorkPatternCountSchema = z
 export const GetWorkPatternSchema = z.object({
   counts: WorkPatternCountSchema,
 });
-
-export const GetWorkPatternResponseSchema =
-  CreateResponseSchema(GetWorkPatternSchema);
 
 export type AnalysisWorkPatternData = z.infer<typeof GetWorkPatternSchema>;
