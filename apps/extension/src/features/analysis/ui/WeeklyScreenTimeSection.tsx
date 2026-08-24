@@ -6,7 +6,7 @@ import { formatDate, formatDuration } from "@recap/lib";
 import { useQueries } from "@recap/react-query";
 
 import useTimeZone from "@/entities/language/model/use-time-zone";
-import { screenTimeQueryOptions } from "@/features/analysis/api/analysis-query";
+import { dashboardQueryOptions } from "@/features/analysis/api/analysis-query";
 import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
@@ -30,14 +30,17 @@ const WeeklyScreenTimeSection = () => {
   const timeZone = useTimeZone();
 
   const [
-    { data: daily, isLoading: isDailyLoading },
-    { data: weekly, isLoading: isWeeklyLoading },
+    { data: dailyDashboard, isLoading: isDailyLoading },
+    { data: weeklyDashboard, isLoading: isWeeklyLoading },
   ] = useQueries({
     queries: [
-      screenTimeQueryOptions({ date, period: "DAILY", timeZone }),
-      screenTimeQueryOptions({ date, period: "WEEKLY", timeZone }),
+      dashboardQueryOptions({ date, period: "DAILY", timeZone }),
+      dashboardQueryOptions({ date, period: "WEEKLY", timeZone }),
     ],
   });
+
+  const daily = dailyDashboard?.getScreenTimeResponse;
+  const weekly = weeklyDashboard?.getScreenTimeResponse;
 
   if (isDailyLoading || isWeeklyLoading || !daily || !weekly) {
     return <WeeklyScreenTimeSectionSkeleton />;

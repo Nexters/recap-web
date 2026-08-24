@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, isoDurationStringSchema } from "../../schemas";
+import { isoDurationStringSchema } from "../../schemas";
 
 const CategoryEnum = z.enum([
   "STUDY",
@@ -39,12 +39,7 @@ const CategoryAnalysisItemSchema = z.object({
 export type CategoryAnalysisItem = z.infer<typeof CategoryAnalysisItemSchema>;
 
 export const GetCategoryAnalysesSchema = z.object({
-  totalStayDuration: isoDurationStringSchema,
   categoryAnalyses: z.array(CategoryAnalysisItemSchema),
 });
-
-export const GetCategoryAnalysesResponseSchema = CreateResponseSchema(
-  GetCategoryAnalysesSchema,
-);
 
 export type AnalysisCategoryData = z.infer<typeof GetCategoryAnalysesSchema>;

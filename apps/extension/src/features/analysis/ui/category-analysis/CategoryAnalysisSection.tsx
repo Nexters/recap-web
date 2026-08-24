@@ -3,7 +3,7 @@ import { useLocale } from "@recap/i18n";
 import { formatDate, formatDuration } from "@recap/lib";
 
 import useTimeZone from "@/entities/language/model/use-time-zone";
-import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
+import { useGetAnalysisDashboard } from "@/features/analysis/api/analysis-query";
 import CategoryAnalysisItem from "@/features/analysis/ui/category-analysis/CategoryAnalysisItem";
 import CategoryBubbleCloud from "@/features/analysis/ui/category-analysis/CategoryBubbleCloud";
 import CategoryTitle from "@/features/analysis/ui/category-analysis/CategoryTitle";
@@ -19,9 +19,12 @@ const CategoryAnalysisSection = () => {
   const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
   const timeZone = useTimeZone();
 
-  const { data, isLoading } = useGetAnalysisCategory(
-    { date, timeZone },
-    { select: toCategoryAnalysisState },
+  const { data, isLoading } = useGetAnalysisDashboard(
+    { date, timeZone, period: "DAILY" },
+    {
+      select: (dashboard) =>
+        toCategoryAnalysisState(dashboard.getCategoryAnalysesResponse),
+    },
   );
 
   const categories = data?.categories ?? [];

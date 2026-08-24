@@ -17,7 +17,7 @@ import {
 } from "@recap/ui";
 
 import { useTimeZone } from "@/entities/language";
-import { screenTimeQueryOptions } from "@/features/analysis/api/analysis-query.client";
+import { dashboardQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
@@ -36,22 +36,25 @@ const ScreenTime = ({ date }: { date: string }) => {
   const timeZone = useTimeZone();
 
   const [
-    { data: daily, isLoading: isDailyLoading },
-    { data: weekly, isLoading: isWeeklyLoading },
+    { data: dailyDashboard, isLoading: isDailyLoading },
+    { data: weeklyDashboard, isLoading: isWeeklyLoading },
   ] = useQueries({
     queries: [
-      screenTimeQueryOptions({
+      dashboardQueryOptions({
         date,
         period: "DAILY",
         timeZone,
       }),
-      screenTimeQueryOptions({
+      dashboardQueryOptions({
         date,
         period: "WEEKLY",
         timeZone,
       }),
     ],
   });
+
+  const daily = dailyDashboard?.getScreenTimeResponse;
+  const weekly = weeklyDashboard?.getScreenTimeResponse;
 
   if (isDailyLoading || isWeeklyLoading || !daily || !weekly) {
     return <ScreenTimeSkeleton />;
