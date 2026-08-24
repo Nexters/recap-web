@@ -35,8 +35,8 @@ export const toScreenTimeChartState = ({
 
   const chartData =
     mode === "DAILY"
-      ? toDailyAnalysisBarChartState(data.screenTimes, t, timeZone)
-      : toWeeklyAnalysisBarChartState(data.screenTimes, date, t, timeZone);
+      ? toDailyAnalysisBarChartState(data.buckets, t, timeZone)
+      : toWeeklyAnalysisBarChartState(data.buckets, date, t, timeZone);
 
   const duration =
     mode === "DAILY"

@@ -7,7 +7,7 @@ import { Card, CardContent } from "@recap/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
-import { categoryAnalysisQueryOptions } from "@/features/analysis/api/analysis-query.client";
+import { dashboardQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import CategoryBubbleCloud from "@/features/analysis/ui/CategoryBubbleCloud";
 import CategoryHeader from "@/features/analysis/ui/CategoryHeader";
 import CategoryRankingList from "@/features/analysis/ui/CategoryRankingList";
@@ -20,8 +20,9 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
   const timeZone = useTimeZone();
 
   const { data } = useSuspenseQuery({
-    ...categoryAnalysisQueryOptions({ date, timeZone }),
-    select: toCategoryAnalysisState,
+    ...dashboardQueryOptions({ date, timeZone, period: "DAILY" }),
+    select: (dashboard) =>
+      toCategoryAnalysisState(dashboard.getCategoryAnalysesResponse),
   });
 
   const categories = data?.categories ?? [];

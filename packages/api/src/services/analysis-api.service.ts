@@ -1,67 +1,35 @@
-import { GetCategoryAnalysesResponseSchema } from "../domains/analysis/category-analysis.schema";
 import {
-  type GetWebsiteAnalysesQueryType,
-  GetWebsiteAnalysesResponseSchema,
-} from "../domains/analysis/frequently-visited-websites.schema";
-import { TopVisitedSiteResponseSchema } from "../domains/analysis/longest-stayed-website.schema";
+  EMPTY_ANALYSIS_DASHBOARD,
+  HISTORY_NOT_FOUND_CODE,
+} from "../domains/analysis/dashboard.const";
 import {
-  type GetScreenTimeQueryType,
-  GetScreenTimeResponseSchema,
-} from "../domains/analysis/screen-time.schema";
-import { GetWorkPatternResponseSchema } from "../domains/analysis/work-pattern.schema";
+  type GetDashboardQueryType,
+  GetDashboardResponseSchema,
+} from "../domains/analysis/dashboard.schema";
+import { APIError } from "../errors/APIError";
 import type { RestAPIProtocol } from "../rest/types";
-import type { DateTimeZoneQueryType } from "../schemas/enum.schema";
 
 export class AnalysisAPIService {
   constructor(private fetch: RestAPIProtocol) {}
 
-  getScreenTime(query?: GetScreenTimeQueryType) {
-    return this.fetch.get({
-      url: "users/me/screen-times",
-      query: {
-        ...query,
-      },
-      validate: GetScreenTimeResponseSchema.parse,
-    });
-  }
+  async getDashboard(query?: GetDashboardQueryType) {
+    try {
+      return await this.fetch.get({
+        url: "users/me/dashboard",
+        query: {
+          ...query,
+        },
+        validate: GetDashboardResponseSchema.parse,
+      });
+    } catch (error) {
+      if (error instanceof APIError && error.code === HISTORY_NOT_FOUND_CODE) {
+        return {
+          success: true,
+          data: EMPTY_ANALYSIS_DASHBOARD,
+        };
+      }
 
-  getWorkPattern(query?: DateTimeZoneQueryType) {
-    return this.fetch.get({
-      url: "users/me/work-pattern",
-      query: {
-        ...query,
-      },
-      validate: GetWorkPatternResponseSchema.parse,
-    });
-  }
-
-  getFrequentlyVisitedWebSite(query?: GetWebsiteAnalysesQueryType) {
-    return this.fetch.get({
-      url: "users/me/frequently-visited-websites",
-      query: {
-        ...query,
-      },
-      validate: GetWebsiteAnalysesResponseSchema.parse,
-    });
-  }
-
-  getLongestStayedWebsite(query?: DateTimeZoneQueryType) {
-    return this.fetch.get({
-      url: "users/me/longest-stayed-website",
-      query: {
-        ...query,
-      },
-      validate: TopVisitedSiteResponseSchema.parse,
-    });
-  }
-
-  getCategoryAnalysis(query?: DateTimeZoneQueryType) {
-    return this.fetch.get({
-      url: "users/me/category-analyses",
-      query: {
-        ...query,
-      },
-      validate: GetCategoryAnalysesResponseSchema.parse,
-    });
+      throw error;
+    }
   }
 }
