@@ -1,0 +1,1 @@
+export const RECAP_NOT_FOUND_CODE = "RECAP_NOT_FOUND";
