@@ -1,11 +1,10 @@
+import type { RecapData } from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
 import { recapAPIService } from "@/features/ai-recap/api";
 import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-keys";
 
-type AiRecapQueryData = Awaited<
-  ReturnType<typeof recapAPIService.getRecap>
->["data"];
+type AiRecapQueryData = RecapData | null;
 
 type UseGetAiRecapOptions<TData = AiRecapQueryData> = Omit<
   UseQueryOptions<AiRecapQueryData, Error, TData>,

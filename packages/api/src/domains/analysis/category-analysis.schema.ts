@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { isoDurationStringSchema } from "../../schemas";
 
-const CategoryEnum = z.enum([
+export const CategoryEnum = z.enum([
   "STUDY",
   "SHOPPING",
   "GAMING",
@@ -20,6 +20,11 @@ const CategoryEnum = z.enum([
 
 export type CategoryType = z.infer<typeof CategoryEnum>;
 
+const categorySchema = z.preprocess(
+  (value) => (value == null || value === "" ? "ETC" : value),
+  CategoryEnum.catch("ETC"),
+);
+
 const CategoryWebsiteAnalysisSchema = z.object({
   domain: z.string(),
   faviconUrl: z.string().nullable(),
@@ -31,7 +36,7 @@ export type CategoryWebsiteAnalysis = z.infer<
 >;
 
 const CategoryAnalysisItemSchema = z.object({
-  category: CategoryEnum,
+  category: categorySchema,
   stayDuration: isoDurationStringSchema,
   websiteAnalyses: z.array(CategoryWebsiteAnalysisSchema),
 });

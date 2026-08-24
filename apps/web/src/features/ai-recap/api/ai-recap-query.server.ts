@@ -6,7 +6,7 @@ import { createServerAuthedRestAPI } from "@/entities/auth/lib/create-server-aut
 
 import { AI_RECAP_KEYS } from "./query-keys";
 
-type AiRecapResponse = Envelope<RecapData>;
+type AiRecapResponse = Envelope<RecapData | null>;
 type AiRecapQueryKey = ReturnType<typeof AI_RECAP_KEYS.detail>;
 
 const serverRecapAPIService = new RecapAPIService(

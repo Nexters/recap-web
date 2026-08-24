@@ -33,7 +33,7 @@ const LoggedInRecap = () => {
   const { data: recap } = useSuspenseQuery({
     ...aiRecapQueryOptions(date),
     select: (data): RecapData | null => {
-      const recap = data.data;
+      const recap = data?.data;
       return recap && hasRecapContent(recap) ? recap : null;
     },
   });
