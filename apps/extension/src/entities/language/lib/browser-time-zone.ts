@@ -11,12 +11,12 @@ export const browserTimeZone = {
 
     if (
       timeZone === SERVER_TIMEZONE.SEOUL ||
-      timeZone === SERVER_TIMEZONE.UTC
+      timeZone === SERVER_TIMEZONE.PACIFIC
     ) {
       return timeZone;
     }
 
-    return SERVER_TIMEZONE.UTC;
+    return SERVER_TIMEZONE.PACIFIC;
   },
   set: async (timeZone: TimeZoneSchemaType) => {
     await browser.storage.local.set({ [TIMEZONE_STORAGE_KEY]: timeZone });

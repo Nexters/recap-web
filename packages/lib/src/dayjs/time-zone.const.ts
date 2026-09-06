@@ -1,4 +1,4 @@
-const DEFAULT_TIME_ZONE = "UTC";
+const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 
 export const CURRENT_TIMEZONE =
   typeof Intl === "undefined"
@@ -7,20 +7,20 @@ export const CURRENT_TIMEZONE =
 
 export enum SERVER_TIMEZONE {
   SEOUL = "SEOUL",
-  UTC = "UTC",
+  PACIFIC = "PACIFIC",
 }
 
 export const SERVER_CURRENT_TIMEZONE =
   CURRENT_TIMEZONE === "Asia/Seoul"
     ? SERVER_TIMEZONE.SEOUL
-    : SERVER_TIMEZONE.UTC;
+    : SERVER_TIMEZONE.PACIFIC;
 
 const SERVER_TIMEZONE_TO_IANA: Record<SERVER_TIMEZONE, string> = {
   [SERVER_TIMEZONE.SEOUL]: "Asia/Seoul",
-  [SERVER_TIMEZONE.UTC]: "UTC",
+  [SERVER_TIMEZONE.PACIFIC]: "America/Los_Angeles",
 };
 
-/** 서버 타임존 코드(`SEOUL` / `UTC`) → dayjs `.tz()`용 IANA 이름 */
+/** 서버 타임존 코드(`SEOUL` / `PACIFIC`) → dayjs `.tz()`용 IANA 이름 */
 export const toIanaTimeZone = (timeZone: string | null | undefined): string => {
   if (timeZone && timeZone in SERVER_TIMEZONE_TO_IANA) {
     return SERVER_TIMEZONE_TO_IANA[timeZone as SERVER_TIMEZONE];

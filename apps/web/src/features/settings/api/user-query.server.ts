@@ -39,7 +39,7 @@ const resolveTimeZoneFromProfile = (
   profile: UserProfileType | undefined,
 ): TimeZoneSchemaType => {
   if (profile?.language === Language.ENGLISH) {
-    return SERVER_TIMEZONE.UTC;
+    return SERVER_TIMEZONE.PACIFIC;
   }
 
   if (profile?.language === Language.KOREAN) {
