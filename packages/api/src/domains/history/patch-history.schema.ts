@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const PatchHistorySchema = z.object({
-  lastActiveAt: z.number().nullable(),
-  endedAt: z.number().nullable(),
+  lastActiveAt: z.number(),
+  endedAt: z.number().optional(),
 });
 
 export type PatchHistoryDTO = z.infer<typeof PatchHistorySchema>;
