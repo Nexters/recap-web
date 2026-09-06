@@ -2,11 +2,11 @@ import browser from "webextension-polyfill";
 
 import { authUnTokenAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
-import browserHistory from "@/entities/history/model/browser.service";
 import {
   type ExtensionMessage,
   MESSAGE_TYPE,
 } from "@/entities/history/model/messages.type";
+import { tabSessionTracker } from "@/entities/history/model/tab-session-tracker";
 import analytics from "@/shared/api/google-analytics/google-analytics.service";
 import { getCurrentTime } from "@/shared/lib/date";
 import {
@@ -34,26 +34,10 @@ browser.runtime.onInstalled.addListener((details) => {
 
 browser.windows.onRemoved.addListener(async (windowId) => {
   const tabs = await getSession();
-  const now = getCurrentTime();
 
   for (const [tabId, session] of Object.entries(tabs)) {
     if (session.windowId !== windowId) continue;
-
-    if (session.closedAt == null) {
-      console.log("[recap] onRemoved", {
-        ...session,
-        closedAt: now,
-        tabId: Number(tabId),
-        isClosed: true,
-      });
-      await browserHistory.record({
-        ...session,
-        closedAt: now,
-        tabId: Number(tabId),
-        isClosed: true,
-      });
-    }
-
+    await tabSessionTracker.leave(Number(tabId));
     await deleteSession(Number(tabId));
   }
 
@@ -61,63 +45,21 @@ browser.windows.onRemoved.addListener(async (windowId) => {
 });
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
-  const session = await getSessionById(tabId);
-  if (!session) return;
-
-  // onActivated에서 이미 closedAt + record 처리된 경우
-  if (session.closedAt != null) {
-    await deleteSession(tabId);
-    return;
-  }
-
-  console.log("[recap] onRemoved", {
-    ...session,
-    closedAt: getCurrentTime(),
-    tabId,
-    isClosed: true,
-  });
-
-  await browserHistory.record({
-    ...session,
-    closedAt: getCurrentTime(),
-    tabId,
-    isClosed: true,
-  });
+  await tabSessionTracker.leave(tabId);
   await deleteSession(tabId);
 });
 
+/**
+ * 같은 창 (window) 안에서 활성 탭이 바뀔 때 발생하는 이벤트
+ */
 browser.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
   const previousTabId = await getWindowTabById(windowId);
-  const now = getCurrentTime();
-
-  if (previousTabId != null && previousTabId !== tabId) {
-    const previousSession = await getSessionById(previousTabId);
-    if (previousSession) {
-      const closed = {
-        ...previousSession,
-        closedAt: now,
-        tabId: previousTabId,
-        windowId,
-        isClosed: true,
-      };
-      await setSession(previousTabId, closed);
-      await browserHistory.record(closed);
-      console.log("[recap] closed (onActivated) >>>", closed);
-    }
-  }
 
   if (previousTabId !== tabId) {
+    await tabSessionTracker.leave();
     const session = await getSessionById(tabId);
     if (session) {
-      const visited = {
-        ...session,
-        visitedAt: now,
-        closedAt: null,
-        tabId,
-        windowId,
-        isClosed: false,
-      };
-      await setSession(tabId, visited);
+      await tabSessionTracker.enter(tabId, session);
     }
   }
 
@@ -133,17 +75,20 @@ browser.runtime.onMessage.addListener(
       const windowId = sender.tab?.windowId;
       if (!tabId) return;
 
-      setSession(tabId, {
+      const session = {
         ...msg.data,
         visitedAt: getCurrentTime(),
         closedAt: null,
         tabId,
         windowId,
-      });
+      };
 
-      if (windowId) {
-        setWindowTab(windowId, tabId);
-      }
+      setSession(tabId, session).then(async () => {
+        if (windowId) {
+          await setWindowTab(windowId, tabId);
+        }
+        await tabSessionTracker.enter(tabId, session, { force: true });
+      });
       return;
     }
 
@@ -159,7 +104,7 @@ browser.runtime.onMessage.addListener(
         authUnTokenAPIService
           .googleOauthLogin({
             oAuthToken: token,
-            provider: "GOOGLE",
+            socialProvider: "GOOGLE",
           })
           .then(async (tokens) => {
             await tokenStore.set(tokens);
