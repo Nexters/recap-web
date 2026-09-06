@@ -7,7 +7,7 @@ export type LanguageSchemaType = z.infer<typeof LanguageSchema>;
 
 export const TimeZoneSchema = z.enum([
   SERVER_TIMEZONE.SEOUL,
-  SERVER_TIMEZONE.UTC,
+  SERVER_TIMEZONE.PACIFIC,
 ]);
 
 export type TimeZoneSchemaType = z.infer<typeof TimeZoneSchema>;
