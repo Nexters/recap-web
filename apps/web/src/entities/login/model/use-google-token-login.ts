@@ -37,7 +37,7 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
 
       const tokens = await authUnTokenAPIService.googleOauthLogin({
         oAuthToken: googleAccessToken,
-        provider: "GOOGLE",
+        socialProvider: "GOOGLE",
       });
 
       loginAuth();

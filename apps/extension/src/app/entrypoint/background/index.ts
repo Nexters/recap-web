@@ -159,7 +159,7 @@ browser.runtime.onMessage.addListener(
         authUnTokenAPIService
           .googleOauthLogin({
             oAuthToken: token,
-            provider: "GOOGLE",
+            socialProvider: "GOOGLE",
           })
           .then(async (tokens) => {
             await tokenStore.set(tokens);
