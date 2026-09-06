@@ -7,5 +7,5 @@ export const LANGUAGE_TO_PROFILE: Record<
   { language: LanguageSchemaType; timeZone: TimeZoneSchemaType }
 > = {
   ko: { language: Language.KOREAN, timeZone: SERVER_TIMEZONE.SEOUL },
-  en: { language: Language.ENGLISH, timeZone: SERVER_TIMEZONE.UTC },
+  en: { language: Language.ENGLISH, timeZone: SERVER_TIMEZONE.PACIFIC },
 };

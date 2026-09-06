@@ -10,7 +10,6 @@ const UserProfileSchema = z.object({
   imageUrl: z.string(),
   timeZone: TimeZoneSchema.optional(),
   language: LanguageSchema.optional(),
-  recapPeriod: z.string().nullable().optional(),
   excludedDomains: z.array(z.string()),
 });
 
